@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script
+			  src="https://code.jquery.com/jquery-2.2.3.min.js"
+			  integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="
+			  crossorigin="anonymous"></script>
+        <script>
+            //connection.open("192.168.31.1", "222");
+            $(document).ready(function() {
+               var ws = new WebSocket('ws://localhost:999', 'echo-protocol');
+               ws.onmessage = function(event) {
+                   var test = JSON.parse(event.data);
+                   console.log(test);
+                   $('body').append(event.data + "<br />");
+               };
+            });
+            </script>
+    </head>
+    <body>
+        <div>TODO write content</div>
+    </body>
+</html>
