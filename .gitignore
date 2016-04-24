@@ -1,0 +1,11 @@
+.DS_Store
+node_modules/*
+
+nbproject/*
+Makefile
+
+/build/
+/dist/
+
+.dep.inc
+
