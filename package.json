@@ -1,0 +1,15 @@
+{
+  "name": "mysql-notification-lib",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "websocket": "^1.0.22"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Krister Andersson",
+  "license": "ISC"
+}
