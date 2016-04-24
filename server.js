@@ -1,30 +1,30 @@
 #!/usr/bin/env node
+
 var WebSocketServer = require('websocket').server;
 var http = require('http');
-
-var PORT = 999;
-
-
 var net = require('net');
 
+var PORT = 999;
+var connections = [];
+
+// create a listening socket
 net.createServer(function(sock) {
-	console.log('LISTEN ON ' + PORT);
+    sock.on('data', function(data) {
+        sock.end();
+        sock.destroy();
+        
+        // send data to all connected clients
+        for(var i = 0; i < connections.length; i++) {
+            connections[i].sendUTF(data);
+        }
+    });
+    sock.on('close', function(data) {
 
-	sock.on('data', function(data) {
-        	console.log(data);
-		sock.write('you said: ' + data);
-		//sock.close();
-		sock.end();
-		sock.destroy();
-
-                connection.sendUTF(data);
-	});
-	sock.on('close', function(data) {
-          console.log('closed');
-        });
+    });
 
 }).listen(PORT, '127.0.0.1');
  
+// create a http server 
 var server = http.createServer(function(request, response) {
     console.log((new Date()) + ' Received request for ' + request.url);
     response.writeHead(404);
@@ -48,8 +48,6 @@ function originIsAllowed(origin) {
   // put logic here to detect whether the specified origin is allowed. 
   return true;
 }
-
-var connection;
  
 wsServer.on('request', function(request) {
     if (!originIsAllowed(request.origin)) {
@@ -58,9 +56,9 @@ wsServer.on('request', function(request) {
       console.log((new Date()) + ' Connection from origin ' + request.origin + ' rejected.');
       return;
     }
-    
-    connection = request.accept('echo-protocol', request.origin);
-    console.log((new Date()) + ' Connection accepted.');
+ 
+    var connection = request.accept('echo-protocol', request.origin);
+    connections.push(connection);
     connection.on('message', function(message) {
         if (message.type === 'utf8') {
             console.log('Received Message: ' + message.utf8Data);
