@@ -9,3 +9,5 @@ Makefile
 
 .dep.inc
 
+# Ignoring object files
+*.o
