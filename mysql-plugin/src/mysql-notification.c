@@ -11,6 +11,7 @@ typedef unsigned long long ulonglong;
 typedef long long longlong;
 #endif /*__WIN__*/
 #else
+#include <string.h>
 #include <my_global.h>
 #include <my_sys.h>
 #endif
@@ -90,7 +91,7 @@ longlong MySQLNotification(UDF_INIT *initid, UDF_ARGS *args,
     char packet[512];
 
     // format a message containing id of row and type of change
-    sprintf(packet, "{\"id\":\"%d\", \"type\":\"%d\"}", *((longlong*)args->args[0]), *((longlong*)args->args[1]));   
+    sprintf(packet, "{\"id\":\"%lld\", \"type\":\"%lld\"}", *((longlong*)args->args[0]), *((longlong*)args->args[1]));   
     
     send(_server, packet, strlen(packet), 0);
     
