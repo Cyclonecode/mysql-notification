@@ -4,8 +4,20 @@ var WebSocketServer = require('websocket').server;
 var http = require('http');
 var net = require('net');
 
+// default port, can be overridden using -p <port>
 var PORT = 999;
+// keeps track of all connected clients
 var connections = [];
+
+function validateArguments() {
+  var args = process.argv.slice(2);
+  var i = args.indexOf('-p');
+  if(i >= 0 && args.length >= 2) {
+  	PORT = args[i+1];
+  }
+}
+
+validateArguments();
 
 // create a listening socket
 net.createServer(function(sock) {
