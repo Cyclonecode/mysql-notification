@@ -72,11 +72,14 @@ INSERT, UPDATE, DELETE queries on the post table:
 
 You can then test the behavior by running queries against your database:
 
-```
-// insert trigger
-$ mysql -u\<user\> -p\<pass\> \<database>\ -e"INSERT INTO post VALUES(1, 'title', 'content', 'http://www.example.com/image.jpg');"
-// update trigger
-$ mysql -u\<user\> -p\<pass\> \<database>\ -e"UPDATE post SET title = 'updated title' WHERE id = 1;"
-// delete trigger
-$ mysql -u\<user\> -p\<pass\> \<database>\ -e"DELETE FROM post WHERE id = 1"
-```
+Insert trigger
+
+> $ mysql -u\<user\> -p\<pass\> \<database>\ -e"INSERT INTO post VALUES(1, 'title', 'content', 'http://www.example.com/image.jpg');"
+
+Update trigger
+
+> $ mysql -u\<user\> -p\<pass\> \<database>\ -e"UPDATE post SET title = 'updated title' WHERE id = 1;"
+
+Delete trigger
+
+> $ mysql -u\<user\> -p\<pass\> \<database>\ -e"DELETE FROM post WHERE id = 1"
