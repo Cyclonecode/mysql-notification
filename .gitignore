@@ -9,5 +9,8 @@ Makefile
 
 .dep.inc
 
-# Ignoring object files
+# object files
 *.o
+
+# shared library files
+*.so
