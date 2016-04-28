@@ -12,7 +12,7 @@ Notice that you'll need to have the mysql headers installed on your system.
 Using linux this can be done by running:
 
 > $ sudo apt-get update
-> $ sudo apt-get install mysql-dev
+> $ sudo apt-get install libmysqld-dev
 
 On OSX using brew you can install the mysql package which contains the needed headers.
 
