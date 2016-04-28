@@ -17,7 +17,7 @@ Using linux this can be done by running:
 > $ sudo apt-get update
 > $ sudo apt-get install libmysqld-dev
 
-On OSX using brew you can install the mysql package which contains the needed headers.
+On OSX using brew you can install the mysql package which contains all the needed headers.
 
 # Installation
 
@@ -55,6 +55,12 @@ $ CREATE TRIGGER <triggerName> AFTER DELETE ON <table>
   END@@
 $ DELIMITER ;
 ```
+
+You may also import import the supplied dump file located under bin/test.sql, this
+will create a database called mysql_note, register the mysql plugin and create triggers for 
+INSERT, UPDATE, DELETE queries on the post table:
+
+> $ mysql -u<user> -p<pass> < bin/test.sql
 
 # Running
 
