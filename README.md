@@ -6,7 +6,7 @@ A simple example of using a user defined function (UDF) in mysql to make real-ti
 
 - You first need to build your shared library using:
 
-> cc -c mysql-notification.c -o mysql-notification.so -I</path/mysql/headers>
+> cc -c mysql-notification.c -o mysql-notification.so -I/path/mysql/headers
 
 Notice that you'll need to have the mysql headers installed on your system. 
 Using linux this can be done by running:
