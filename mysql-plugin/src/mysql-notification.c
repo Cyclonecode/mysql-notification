@@ -84,6 +84,10 @@ my_bool MySQLNotification_init(UDF_INIT *initid,
 void MySQLNotification_deinit(UDF_INIT *initid) {
     // free any allocated memory here
     //free((longlong*)initid->ptr);
+    // close server socket
+    if(_server != -1) {
+        close(_server);
+    }
 }
 
 longlong MySQLNotification(UDF_INIT *initid, UDF_ARGS *args,
