@@ -73,6 +73,7 @@ my_bool MySQLNotification_init(UDF_INIT *initid,
     remote.sin_port = htons(999);
     remote.sin_addr.s_addr = inet_addr("127.0.0.1");
     if(connect(_server, (struct sockaddr*)&remote, sizeof(remote)) != 0) {
+        strcpy(message, "Failed to connect to server on port 999");
         return -1;
     }  
 
