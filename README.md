@@ -14,10 +14,16 @@ $ gcc -shared -o mysql-notification.so mysql-notification.o
 Notice that you'll need to have the mysql headers installed on your system. 
 Using linux this can be done by running:
 
-> $ sudo apt-get update
-> $ sudo apt-get install libmysqld-dev
+```
+$ sudo apt-get update
+$ sudo apt-get install libmysqld-dev
+```
 
 On OSX using brew you can install the mysql package which contains all the needed headers.
+
+You can find the location of the mysql headers by executing:
+
+> $ find / -name mysql.h 2>/dev/null
 
 # Installation
 
