@@ -1,6 +1,6 @@
 {
   "name": "mysql-notification",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Example of a user defined function (UDF) in MySQL",
   "main": "server.js",
   "dependencies": {
