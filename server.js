@@ -4,20 +4,12 @@ var WebSocketServer = require('websocket').server;
 var http = require('http');
 var net = require('net');
 
-// default port, can be overridden using -p <port>
-var PORT = 999;
+// server port
+var SERVER_PORT = 999;
+// server address
+var SERVER_ADDR = '127.0.0.1';
 // keeps track of all connected clients
 var connections = [];
-
-function validateArguments() {
-  var args = process.argv.slice(2);
-  var i = args.indexOf('-p');
-  if(i >= 0 && args.length >= 2) {
-  	PORT = args[i+1];
-  }
-}
-
-validateArguments();
 
 // create a listening socket
 net.createServer(function(sock) {
@@ -34,7 +26,7 @@ net.createServer(function(sock) {
 
     });
 
-}).listen(PORT, '127.0.0.1');
+}).listen(SERVER_PORT, SERVER_ADDR);
  
 // create a http server 
 var server = http.createServer(function(request, response) {
@@ -42,8 +34,8 @@ var server = http.createServer(function(request, response) {
     response.writeHead(404);
     response.end();
 });
-server.listen(PORT, function() {
-    console.log((new Date()) + ' Server is listening on port ' + PORT);
+server.listen(SERVER_PORT, function() {
+    console.log((new Date()) + ' Server is listening on port ' + SERVER_PORT);
 });
  
 wsServer = new WebSocketServer({
