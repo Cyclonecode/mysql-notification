@@ -7,7 +7,7 @@
         <script src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" crossorigin="anonymous"></script>
         <script>
             $(document).ready(function() {
-               var ws = new WebSocket('ws://localhost:999', 'echo-protocol');
+               var ws = new WebSocket('ws://127.0.0.1:8080', 'echo-protocol');
                ws.onmessage = function(event) {
                    $('body').append(event.data + "<br />");
                };

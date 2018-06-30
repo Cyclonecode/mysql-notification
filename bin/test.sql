@@ -12,7 +12,7 @@ CREATE TABLE post (
 );
 
 DROP FUNCTION IF EXISTS MySQLNotification;
-CREATE FUNCTION MySQLNotification RETURNS INTEGER SONAME 'mysql-notification.so';
+CREATE FUNCTION MySQLNotification RETURNS INTEGER SONAME 'mysql_notification.so';
 
 DELIMITER @@
 

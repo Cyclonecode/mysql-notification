@@ -7,8 +7,8 @@ A simple example of using a user defined function (UDF) in mysql to make real-ti
 - You first need to build your shared library using:
 
 ```
-$ gcc -c -Wall -fpic mysql-notification.c -I/path/mysql/headers
-$ gcc -shared -o mysql-notification.so mysql-notification.o
+$ gcc -c -Wall -fpic mysql-notification.c -o mysql-notification.o -I/path/mysql/headers
+$ gcc -shared -o mysql_notification.so mysql-notification.o
 ```
 
 Notice that you'll need to have the mysql headers installed on your system. 
@@ -34,11 +34,11 @@ You can find the location of the mysql headers by executing:
 - Setup your user defined function (UDF) by adding the shared library into mysqls plugin folder, this folder 
 can be located by executing `SHOW VARIABLES LIKE 'plugin_dir';` from the mysql client.
 
-> $ cp mysql-notification.so /usr/local/mysql/lib/plugin/.
+> $ cp mysql_notification.so /usr/local/mysql/lib/plugin/.
 
 - Tell mysql about the UDF
 
-> $ CREATE FUNCTION MySQLNotification RETURNS INTEGER SONAME 'mysql-notification.so';
+> $ CREATE FUNCTION MySQLNotification RETURNS INTEGER SONAME 'mysql_notification.so';
 
 - Create triggers for INSERT/UPDATE/DELETE
 
@@ -72,7 +72,9 @@ INSERT, UPDATE, DELETE queries on the post table:
 
 > $ node server.json
 
-- Go to address http://127.0.0.1:999 in your browser and start receiving notifications from your database.
+- Go to address http://127.0.0.1:8080 in your browser and start receiving notifications from your database.
+
+Notice that the actual server is running on port 2048 and the websocket on port 8080.
 
 # Testing
 
