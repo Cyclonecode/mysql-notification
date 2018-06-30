@@ -4,11 +4,15 @@
   "description": "Example of a user defined function (UDF) in MySQL",
   "main": "server.js",
   "dependencies": {
-    "websocket": "^1.0.22"
+    "websocket": "^1.0.26"
   },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Cyclonecode/mysql-notification.git"
   },
   "author": "Cyclonecode",
   "license": "ISC"
