@@ -15,4 +15,4 @@ gcc -c -Wall -fpic ${TARGET_DIR}/mysql-notification.c -o ${TARGET_DIR}/mysql_not
 gcc -shared -o ${TARGET_DIR}/mysql_notification.so ${TARGET_DIR}/mysql_notification.o
 
 # Uncomment this line to copy shared object file into mysql plugin path.
-cp ${TARGET_DIR}/mysql_notification.so /usr/lib/mysql/plugin/.
+# cp ${TARGET_DIR}/mysql_notification.so /usr/lib/mysql/plugin/.
