@@ -73,6 +73,7 @@ INSERT, UPDATE, DELETE queries on the post table:
 > $ node server.json
 
 - Go to address http://127.0.0.1:8080 in your browser and start receiving notifications from your database.
+- If you would like to try this on a real domain and not your local environment, then you will need to update `index.html` and replacing the `localhost` part with the actual domain name.
 
 Notice that the actual server is running on port 2048 and the websocket on port 8080.
 
