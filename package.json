@@ -4,7 +4,7 @@
   "description": "Example of a user defined function (UDF) in MySQL",
   "main": "server.js",
   "dependencies": {
-    "websocket": "^1.0.26"
+    "websocket": "^1.0.28"
   },
   "devDependencies": {},
   "scripts": {
