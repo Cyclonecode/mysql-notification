@@ -4,6 +4,14 @@ A simple example of using a user defined function (UDF) in mysql to make real-ti
 
 # Compiling
 
+Notice that you may build the extension and install it using the supplied shell script:
+
+> sudo ./build.sh
+
+To clean up any files from a previous build you can execute:
+
+> sudo ./build.sh clean
+
 - You first need to build your shared library using:
 
 ```
