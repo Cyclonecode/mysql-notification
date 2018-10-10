@@ -37,4 +37,4 @@ fi
 gcc -c -Wall -fpic ${TARGET_DIR}/mysql-notification.c -o ${TARGET_DIR}/mysql_notification.o -I${MYSQL_INCLUDE_DIR}
 gcc -shared -o ${TARGET_DIR}/mysql_notification.so ${TARGET_DIR}/mysql_notification.o
 cp ${TARGET_DIR}/mysql_notification.so ${MYSQL_PLUGIN_DIR}/.
-chmod 0644 ${MYSQL_PLUGIN_DIR}/mysql_notification.so
+chmod 0444 ${MYSQL_PLUGIN_DIR}/mysql_notification.so
