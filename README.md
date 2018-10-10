@@ -2,15 +2,17 @@
 
 A simple example of using a user defined function (UDF) in mysql to make real-time notifications on a table change. This project concists of a mysql plugin that setups a server socket that receives messages from a trigger connected to INSERT, UPDATE, DELETE operations on a specific table in the database. The server will then send a message to a nodejs server that in turn will bounce this notification to any connected http client over a websocket.
 
-# Compiling
+## Compiling
 
 Notice that you may build the extension and install it using the supplied shell script:
 
-> sudo ./build.sh
+    ./build.sh
 
 To clean up any files from a previous build you can execute:
 
-> sudo ./build.sh clean
+    ./build.sh clean
+
+## Compiling manually
 
 - You first need to build your shared library using:
 
@@ -22,68 +24,80 @@ $ gcc -shared -o mysql_notification.so mysql-notification.o
 Notice that you'll need to have the mysql headers installed on your system. 
 Using linux this can be done by running:
 
+### Linux
+
 ```
-$ sudo apt-get update
-$ sudo apt-get install libmysqld-dev
+sudo apt-get update
+sudo apt-get install libmysqld-dev
 ```
 
-On OSX using brew you can install the mysql package which contains all the needed headers.
+### OSX
+
+```
+brew install mysql mysql-client
+brew services start mysql
+```
 
 You can find the location of the mysql headers by executing:
 
-> $ find / -name mysql.h 2>/dev/null
+    find / -name mysql.h 2>/dev/null
+
+### OSX
+
+    brew info mysql-client
 
 # Installation
 
 - Install modules from package.json
 
-> $ npm install
+      npm install
 
 - Setup your user defined function (UDF) by adding the shared library into mysqls plugin folder, this folder 
 can be located by executing `SHOW VARIABLES LIKE 'plugin_dir';` from the mysql client.
 
-> $ cp mysql_notification.so /usr/local/mysql/lib/plugin/.
+      mysql -u<user> -p<pass> -e"SHOW VARIABLES LIKE 'plugin_dir'"
+      cp mysql_notification.so /usr/local/mysql/lib/plugin/.
 
 - Tell mysql about the UDF
 
-> $ CREATE FUNCTION MySQLNotification RETURNS INTEGER SONAME 'mysql_notification.so';
+      CREATE FUNCTION MySQLNotification RETURNS INTEGER SONAME 'mysql_notification.so';
 
 - Create triggers for INSERT/UPDATE/DELETE
 
 ```
-$ DELIMITER @@
-$ CREATE TRIGGER <triggerName> AFTER INSERT ON <table> 
-  FOR EACH ROW 
-  BEGIN 
-    SELECT MySQLNotification(NEW.id, 2) INTO @x; 
-  END@@
-$ CREATE TRIGGER <triggerName> AFTER UPDATE ON <table>
-  FOR EACH ROW 
-  BEGIN 
-    SELECT MySQLNotification(NEW.id, 3) INTO @x; 
-  END@@
-$ CREATE TRIGGER <triggerName> AFTER DELETE ON <table>
-  FOR EACH ROW 
-  BEGIN 
-    SELECT MySQLNotification(OLD.id, 4) INTO @x; 
-  END@@
-$ DELIMITER ;
+DELIMITER @@
+CREATE TRIGGER <triggerName> AFTER INSERT ON <table> 
+FOR EACH ROW 
+BEGIN 
+  SELECT MySQLNotification(NEW.id, 2) INTO @x; 
+END@@
+CREATE TRIGGER <triggerName> AFTER UPDATE ON <table>
+FOR EACH ROW 
+BEGIN 
+  SELECT MySQLNotification(NEW.id, 3) INTO @x; 
+END@@
+CREATE TRIGGER <triggerName> AFTER DELETE ON <table>
+FOR EACH ROW 
+BEGIN 
+  SELECT MySQLNotification(OLD.id, 4) INTO @x; 
+END@@
+DELIMITER ;
 ```
 
-You may also import import the supplied dump file located under bin/test.sql, this
+You may also import import the supplied dump file located under **bin/test.sql**, this
 will create a database called mysql_note, register the mysql plugin and create triggers for 
 INSERT, UPDATE, DELETE queries on the post table:
 
-> $ mysql -u\<user\> -p\<pass\> \< bin/test.sql
+    mysql -u<user> -p<pass> < bin/test.sql
 
 # Running
 
-> $ node server.json
+    node server.json
 
-- Go to address http://127.0.0.1:8080 in your browser and start receiving notifications from your database.
-- If you would like to try this on a real domain and not your local environment, then you will need to update `index.html` and replacing the `localhost` part with the actual domain name.
+- Go to address **http://localhost/<install_dir>/index.html** in your browser and start receiving notifications from your database.
+- If you would like to try this on a real domain and not your local environment, then you will need to update `index.html` and replacing the `localhost` part with the actual domain/ip.
 
-Notice that the actual server is running on port 2048 and the websocket on port 8080.
+Notice that the actual server is running on port **2048** and the websocket on port **8080**.
 
 # Testing
 
@@ -91,12 +105,12 @@ You can then test the behavior by running queries against your database:
 
 Insert trigger
 
-> $ mysql -u\<user\> -p\<pass\> \<database\> -e"INSERT INTO post VALUES(1, 'title', 'content', 'url');"
+    mysql -u<user> -p<pass> <database> -e"INSERT INTO post VALUES(1, 'title', 'content', 'url');"
 
 Update trigger
 
-> $ mysql -u\<user\> -p\<pass\> \<database\> -e"UPDATE post SET title = 'updated title' WHERE id = 1;"
+    mysql -u<user> -p<pass> <database> -e"UPDATE post SET title = 'updated title' WHERE id = 1;"
 
 Delete trigger
 
-> $ mysql -u\<user\> -p\<pass\> \<database\> -e"DELETE FROM post WHERE id = 1"
+    mysql -u<user> -p<pass> <database> -e"DELETE FROM post WHERE id = 1"
