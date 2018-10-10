@@ -1,14 +1,10 @@
 #!/usr/bin/env node
-
 var WebSocketServer = require('websocket').server;
 var http = require('http');
 var net = require('net');
 
-// server port
 var SERVER_PORT = 2048;
-// websocket port
 var WEBSOCKET_PORT = 8080
-// server address
 var SERVER_ADDR = '127.0.0.1';
 // keeps track of all connected clients
 var connections = [];
@@ -27,7 +23,6 @@ net.createServer(function(sock) {
     sock.on('close', function(data) {
 
     });
-
 }).listen(SERVER_PORT, SERVER_ADDR);
 
 // create a http server 
@@ -75,6 +70,8 @@ wsServer.on('request', function(request) {
         }
     });
     connection.on('close', function(reasonCode, description) {
+        var index = connections.indexOf(this);
+        connections.splice(index, 1);
         console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
     });
 });
