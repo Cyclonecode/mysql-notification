@@ -1,6 +1,6 @@
 # mysql-notification
 
-A simple example of using a user defined function (UDF) in mysql to make real-time notifications on a table change. This project concists of a mysql plugin that setups a server socket that receives messages from a trigger connected to INSERT, UPDATE, DELETE operations on a specific table in the database. The server will then send a message to a nodejs server that in turn will bounce this notification to any connected http client over a websocket.
+A simple example of using a user defined function (UDF) in mysql to make real-time notifications on a table change. This project consists of a mysql plugin that setups a server socket that receives messages from a trigger connected to INSERT, UPDATE, DELETE operations on a specific table in the database. The server will then send a message to a nodejs server that in turn will bounce this notification to any connected http client over a websocket.
 
 ## Compiling
 
@@ -52,21 +52,21 @@ You can find the location of the mysql headers by executing:
 
 # Installation
 
-- Install modules from package.json
+- Install modules from **package.json**:
 
       npm install
 
 - Setup your user defined function (UDF) by adding the shared library into mysqls plugin folder, this folder 
-can be located by executing `SHOW VARIABLES LIKE 'plugin_dir';` from the mysql client.
+can be located by executing `SHOW VARIABLES LIKE 'plugin_dir';` from the mysql client:
 
       mysql -u<user> -p<pass> -e"SHOW VARIABLES LIKE 'plugin_dir'"
       cp mysql_notification.so /usr/local/mysql/lib/plugin/.
 
-- Tell mysql about the UDF
+- Tell mysql about the UDF:
 
       CREATE FUNCTION MySQLNotification RETURNS INTEGER SONAME 'mysql_notification.so';
 
-- Create triggers for INSERT/UPDATE/DELETE
+- Create triggers for INSERT/UPDATE/DELETE:
 
 ```
 DELIMITER @@
@@ -89,8 +89,8 @@ DELIMITER ;
 ```
 
 You may also import import the supplied dump file located under **bin/test.sql**, this
-will create a database called mysql_note, register the mysql plugin and create triggers for 
-INSERT, UPDATE, DELETE queries on the post table:
+will create a database called **mysql_note**, register the mysql plugin and create triggers for 
+**INSERT**, **UPDATE**, **DELETE** queries on the **post** table:
 
     mysql -u<user> -p<pass> < bin/test.sql
 
