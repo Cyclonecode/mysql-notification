@@ -1,11 +1,13 @@
 #!/bin/bash
 
-COMPILER=gcc
+COMPILER=cc
 TARGET_DIR=./mysql-plugin/src
+TARGET_FILE=mysql_notification
 MYSQL_INCLUDE_DIR=/usr/include/mysql
 MYSQL_PLUGIN_DIR=/usr/lib/mysql/plugin
 SERVER_PORT=2048
 SERVER_ADDRESS=127.0.0.1
+WEBSOCKET_PORT=8080
 MYSQL_USER=root
 MYSQL_PASSWORD=
 MYSQL_DATABASE=mysql_note
@@ -52,13 +54,21 @@ then
   read SERVER_PORT
 fi
 
-${COMPILER} -c -D SERVER_PORT=${SERVER_PORT} -D SERVER_ADDRESS=\"${SERVER_ADDRESS}\" -Wall -fpic ${TARGET_DIR}/mysql-notification.c -o ${TARGET_DIR}/mysql_notification.o -I${MYSQL_INCLUDE_DIR}
-${COMPILER} -shared -o ${TARGET_DIR}/mysql_notification.so ${TARGET_DIR}/mysql_notification.o
-cp ${TARGET_DIR}/mysql_notification.so ${MYSQL_PLUGIN_DIR}/.
-chmod 0444 ${MYSQL_PLUGIN_DIR}/mysql_notification.so
+echo "Change default websocket port 8080? [y/N]: "
+read confirm
+if [ "$confirm" == "y" ] || [ "$confirm" == "Y" ];
+then
+  echo "Enter websocket port: "
+  read WEBSOCKET_PORT
+fi
+
+${COMPILER} -c -D SERVER_PORT=${SERVER_PORT} -D SERVER_ADDRESS=\"${SERVER_ADDRESS}\" -Wall -fpic ${TARGET_DIR}/mysql-notification.c -o ${TARGET_DIR}/${TARGET_FILE}.o -I${MYSQL_INCLUDE_DIR}
+${COMPILER} -shared -o ${TARGET_DIR}/${TARGET_FILE}.so ${TARGET_DIR}/${TARGET_FILE}.o
+cp ${TARGET_DIR}/${TARGET_FILE}.so ${MYSQL_PLUGIN_DIR}/.
+chmod 0444 ${MYSQL_PLUGIN_DIR}/${TARGET_FILE}.so
 
 if [ $? -eq 0 ] && [ "$1" == 'start' ];
 then
   mysql -u${MYSQL_USER} -p${MYSQL_PASSWORD} < bin/test.sql
-  node ./server.js -p${SERVER_PORT} -h\"${SERVER_ADDRESS}\"
+  node ./server.js -p${SERVER_PORT} -w${WEBSOCKET_PORT} -h\"${SERVER_ADDRESS}\"
 fi
