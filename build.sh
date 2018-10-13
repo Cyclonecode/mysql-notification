@@ -1,12 +1,16 @@
 #!/bin/bash
 
+COMPILER=gcc
 TARGET_DIR=./mysql-plugin/src
 MYSQL_INCLUDE_DIR=/usr/include/mysql
 MYSQL_PLUGIN_DIR=/usr/lib/mysql/plugin
 SERVER_PORT=2048
-SERVER_ADDRESS=\"127.0.0.1\"
-MYSQL_INCLUDE_DIR=/usr/local/Cellar/mysql-client/5.7.23/include/mysql
-MYSQL_PLUGIN_DIR=/usr/local/opt/mysql/lib/plugin/
+SERVER_ADDRESS=127.0.0.1
+MYSQL_USER=root
+MYSQL_PASSWORD=
+MYSQL_DATABASE=mysql_note
+
+command -v ${COMPILER} >/dev/null 2>&1 || { echo >&2 "$COMPILER is required, please install it."; exit 1; }
 
 if [ "$1" == 'clean' ];
 then
@@ -48,7 +52,13 @@ then
   read SERVER_PORT
 fi
 
-gcc -c -D SERVER_PORT=${SERVER_PORT} -D SERVER_ADDRESS=${SERVER_ADDRESS} -Wall -fpic ${TARGET_DIR}/mysql-notification.c -o ${TARGET_DIR}/mysql_notification.o -I${MYSQL_INCLUDE_DIR}
-gcc -shared -o ${TARGET_DIR}/mysql_notification.so ${TARGET_DIR}/mysql_notification.o
+${COMPILER} -c -D SERVER_PORT=${SERVER_PORT} -D SERVER_ADDRESS=\"${SERVER_ADDRESS}\" -Wall -fpic ${TARGET_DIR}/mysql-notification.c -o ${TARGET_DIR}/mysql_notification.o -I${MYSQL_INCLUDE_DIR}
+${COMPILER} -shared -o ${TARGET_DIR}/mysql_notification.so ${TARGET_DIR}/mysql_notification.o
 cp ${TARGET_DIR}/mysql_notification.so ${MYSQL_PLUGIN_DIR}/.
 chmod 0444 ${MYSQL_PLUGIN_DIR}/mysql_notification.so
+
+if [ $? -eq 0 ] && [ "$1" == 'start' ];
+then
+  mysql -u${MYSQL_USER} -p${MYSQL_PASSWORD} < bin/test.sql
+  node ./server.js -p${SERVER_PORT} -h\"${SERVER_ADDRESS}\"
+fi

@@ -12,6 +12,10 @@ To clean up any files from a previous build you can execute:
 
     ./build.sh clean
 
+You can also build the extension, import the database and start the node server:
+
+    ./build.sh start
+
 ## Compiling manually
 
 - You first need to build your shared library using:
@@ -92,12 +96,15 @@ INSERT, UPDATE, DELETE queries on the post table:
 
 # Running
 
-    node server.json
-
+    node server.json [-p2048][-w8080][-h127.0.0.1]
+    
+- Notice, that the `index.html` will be created if it does not yet exists.
 - Go to address **http://localhost/<install_dir>/index.html** in your browser and start receiving notifications from your database.
-- If you would like to try this on a real domain and not your local environment, then you will need to update `index.html` and replacing the `localhost` part with the actual domain/ip.
+- The `-p` argument can be used to specify which server port listen on.
+- The `-w` argument can be used to specify which websocket port to open.
+- The `-h` argument can be used to specify which address to bind to.
 
-Notice that the actual server is running on port **2048** and the websocket on port **8080**.
+By default the server is running on port **2048** and the websocket on port **8080**.
 
 # Testing
 
