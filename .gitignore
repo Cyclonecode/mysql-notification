@@ -8,6 +8,7 @@ Makefile
 /dist/
 
 .dep.inc
+index.html
 
 # object files
 *.o
