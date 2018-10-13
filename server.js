@@ -12,7 +12,7 @@ var connections = []
 
 // parse any arguments
 var argv = require('minimist')(process.argv.slice(2))
-console.log(argv)
+
 if (argv.p) {
   SERVER_PORT = argv.p
 }
@@ -20,7 +20,7 @@ if (argv.w) {
   WEBSOCKET_PORT = argv.w
 }
 if (argv.h) {
-  SERVER_ADDR = argv.h
+  SERVER_ADDR = argv.h.replace(/['"]+/g, '')
 }
 
 // create a listening socket
