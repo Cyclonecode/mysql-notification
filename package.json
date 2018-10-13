@@ -16,7 +16,12 @@
     "eslint-plugin-standard": "^4.0.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "node scripts/server.js",
+    "setup": "./build.sh",
+    "clean": "./build.sh clean",
+    "start": "./build.sh start",
+    "lint": "eslint --ext .js scripts"
   },
   "repository": {
     "type": "git",
