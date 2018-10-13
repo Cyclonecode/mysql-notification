@@ -6,15 +6,15 @@ A simple example of using a user defined function (UDF) in mysql to make real-ti
 
 Notice that you may build the extension and install it using the supplied shell script:
 
-    ./build.sh
+    npm run setup
 
 To clean up any files from a previous build you can execute:
 
-    ./build.sh clean
+     npm run cleanup
 
 You can also build the extension, import the database and start the node server:
 
-    ./build.sh start
+     npm run start
 
 ## Compiling manually
 
@@ -96,7 +96,13 @@ will create a database called **mysql_note**, register the mysql plugin and crea
 
 # Running
 
-    node server.json [-p2048][-w8080][-h127.0.0.1]
+Start the server with the default settings:
+
+    npm run server
+
+Start the server at a specific address and port:    
+    
+    node ./scripts/server.json [-p2048][-w8080][-h127.0.0.1]
     
 - Notice, that the `index.html` will be created if it does not yet exists.
 - Go to address **http://localhost/<install_dir>/index.html** in your browser and start receiving notifications from your database.
