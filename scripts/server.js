@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-var WebSocketServer = require('websocket').server
-var http = require('http')
-var net = require('net')
-var fs = require('fs')
+const WebSocketServer = require('websocket').server
+const http = require('http')
+const net = require('net')
+const fs = require('fs')
 
 var SERVER_PORT = 2048
 var WEBSOCKET_PORT = 8080
@@ -24,8 +24,8 @@ if (argv.h) {
 }
 
 // create a listening socket
-net.createServer(function (sock) {
-  sock.on('data', function (data) {
+net.createServer((sock) => {
+  sock.on('data', (data) => {
     sock.end()
     sock.destroy()
 
@@ -34,22 +34,22 @@ net.createServer(function (sock) {
       connections[i].sendUTF(data)
     }
   })
-  sock.on('close', function (data) {
+  sock.on('close', (data) => {
 
   })
-}).listen(SERVER_PORT, SERVER_ADDR)
+}).listen(SERVER_PORT)
 
 // create a http server
-var server = http.createServer(function (request, response) {
+const server = http.createServer((request, response) => {
   console.log((new Date()) + ' Received request for ' + request.url)
   response.writeHead(404)
   response.end()
 })
-server.listen(WEBSOCKET_PORT, function () {
+server.listen(WEBSOCKET_PORT, () => {
   console.log((new Date()) + ' Server is listening on port ' + SERVER_PORT)
 })
 
-var wsServer = new WebSocketServer({
+const wsServer = new WebSocketServer({
   httpServer: server,
   // You should not use autoAcceptConnections for production
   // applications, as it defeats all standard cross-origin protection
@@ -88,7 +88,7 @@ function createTemplate () {
         '    </body>\n' +
         '</html>'
 
-  fs.writeFile('./index.html', output, function (err) {
+  fs.writeFile('./index.html', output, (err) => {
     if (err) {
       return console.log(err)
     }
@@ -100,7 +100,7 @@ if (!fs.existsSync('./index.html')) {
   createTemplate()
 }
 
-wsServer.on('request', function (request) {
+wsServer.on('request', (request) => {
   if (!originIsAllowed(request.origin)) {
     // Make sure we only accept requests from an allowed origin
     request.reject()
@@ -109,7 +109,7 @@ wsServer.on('request', function (request) {
   }
   var connection = request.accept('echo-protocol', request.origin)
   connections.push(connection)
-  connection.on('message', function (message) {
+  connection.on('message', (message) => {
     if (message.type === 'utf8') {
       console.log('Received Message: ' + message.utf8Data)
       connection.sendUTF(message.utf8Data)
@@ -118,7 +118,7 @@ wsServer.on('request', function (request) {
       connection.sendBytes(message.binaryData)
     }
   })
-  connection.on('close', function (reasonCode, description) {
+  connection.on('close', (reasonCode, description) => {
     var index = connections.indexOf(this)
     connections.splice(index, 1)
     console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.')
