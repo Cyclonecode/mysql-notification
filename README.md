@@ -102,7 +102,7 @@ Start the server with the default settings:
 
 Start the server at a specific address and port:    
     
-    node ./scripts/server.json [-p2048][-w8080][-h127.0.0.1]
+    npm run server -- -p 2048 -h localhost -w 8080
     
 - Notice, that the `index.html` will be created if it does not yet exists.
 - Go to address **http://localhost/<install_dir>/index.html** in your browser and start receiving notifications from your database.
