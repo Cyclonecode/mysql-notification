@@ -35,8 +35,8 @@ command -v ${COMPILER} >/dev/null 2>&1 || { echo >&2 "$COMPILER is required, ple
 
 if [ "$1" == 'clean' ];
 then
-  rm ${TARGET_DIR}/*.o ${TARGET_DIR}/*.so
-  exit
+  rm ${TARGET_DIR}/*.o ${TARGET_DIR}/*.so 2>/dev/null
+  exit 0
 fi
 
 if [ ! -d "$MYSQL_INCLUDE_DIR" ];
