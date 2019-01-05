@@ -4,24 +4,15 @@ const http = require('http')
 const net = require('net')
 const fs = require('fs')
 
-var SERVER_PORT = 2048
-var WEBSOCKET_PORT = 8080
-var SERVER_ADDR = '127.0.0.1'
 // keeps track of all connected clients
-var connections = []
+let connections = []
 
 // parse any arguments
-var argv = require('minimist')(process.argv.slice(2))
+const argv = require('minimist')(process.argv.slice(2))
 
-if (argv.p) {
-  SERVER_PORT = argv.p
-}
-if (argv.w) {
-  WEBSOCKET_PORT = argv.w
-}
-if (argv.h) {
-  SERVER_ADDR = argv.h.replace(/['"]+/g, '')
-}
+const SERVER_PORT = argv.p ? parseInt(argv.p) : 2048
+const WEBSOCKET_PORT = argv.w ? parseInt(argv.w) : 8080
+const SERVER_ADDR = argv.h ? argv.h.replace(/['"]+/g, '') : '127.0.0.1'
 
 // create a listening socket
 net.createServer((sock) => {
@@ -30,7 +21,7 @@ net.createServer((sock) => {
     sock.destroy()
 
     // send data to all connected clients
-    for (var i = 0; i < connections.length; i++) {
+    for (let i = 0; i < connections.length; i++) {
       connections[i].sendUTF(data)
     }
   })
@@ -46,7 +37,7 @@ const server = http.createServer((request, response) => {
   response.end()
 })
 server.listen(WEBSOCKET_PORT, () => {
-  console.log((new Date()) + ' Server is listening on port ' + SERVER_PORT)
+  console.log((new Date()) + ' Server is listening on port ' + WEBSOCKET_PORT)
 })
 
 const wsServer = new WebSocketServer({
@@ -88,7 +79,7 @@ function createTemplate () {
         '    </body>\n' +
         '</html>'
 
-  fs.writeFile('./index.html', output, (err) => {
+  fs.writeFile('index.html', output, (err) => {
     if (err) {
       return console.log(err)
     }
@@ -96,7 +87,7 @@ function createTemplate () {
   })
 }
 
-if (!fs.existsSync('./index.html')) {
+if (!fs.existsSync('index.html')) {
   createTemplate()
 }
 
@@ -119,7 +110,7 @@ wsServer.on('request', (request) => {
     }
   })
   connection.on('close', (reasonCode, description) => {
-    var index = connections.indexOf(this)
+    let index = connections.indexOf(this)
     connections.splice(index, 1)
     console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.')
   })
