@@ -98,11 +98,11 @@ will create a database called **mysql_note**, register the mysql plugin and crea
 
 Start the server with the default settings:
 
-    npm run server
+    npm run start
 
 Start the server at a specific address and port:    
     
-    npm run server -- -p 2048 -h localhost -w 8080
+    npm run start -- -p 2048 -h localhost -w 8080
     
 - Notice, that the `index.html` will be created if it does not yet exists.
 - Go to address **http://localhost/<install_dir>/index.html** in your browser and start receiving notifications from your database.
