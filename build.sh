@@ -3,33 +3,14 @@
 COMPILER=cc
 TARGET_DIR=./mysql-plugin/src
 TARGET_FILE=mysql_notification
-MYSQL_INCLUDE_DIR=/usr/include/mysql
-MYSQL_PLUGIN_DIR=/usr/lib/mysql/plugin
-
-if [ -z "$SERVER_PORT" ];
-then
-  SERVER_PORT=2048
-fi
-if [ -z "$SERVER_ADDRESS" ];
-then
-  SERVER_ADDRESS=127.0.0.1
-fi
-if [ -z "$WEBSOCKET_PORT" ];
-then
-  WEBSOCKET_PORT=8080
-fi
-if [ -z "$MYSQL_USER" ];
-then
-  MYSQL_USER=root
-fi
-if [ -z "$MYSQL_PASSWORD" ];
-then
-  MYSQL_PASSWORD=
-fi
-if [ -z "$MYSQL_DATABASE" ];
-then
-  MYSQL_DATABASE=mysql_note
-fi
+MYSQL_INCLUDE_DIR=${MYSQL_INCLUDE_DIR:-/usr/include/mysql}
+MYSQL_PLUGIN_DIR=${MYSQL_PLUGIN_DIR:-/usr/lib/mysql/plugin}
+SERVER_PORT=${SERVER_PORT:-2048}
+SERVER_ADDRESS=${SERVER_ADDRESS:-127.0.0.1}
+WEBSOCKET_PORT=${WEBSOCKET_PORT:-8080}
+MYSQL_USER=${MYSQL_USER:-root}
+MYSQL_PASSWORD=${MYSQL_PASSWORD:-}
+MYSQL_DATABASE=${MYSQL_DATABASE:-mysql_note}
 
 command -v ${COMPILER} >/dev/null 2>&1 || { echo >&2 "$COMPILER is required, please install it."; exit 1; }
 
