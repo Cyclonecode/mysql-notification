@@ -1,6 +1,6 @@
 {
   "name": "mysql-notification",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Example of a user defined function (UDF) in MySQL",
   "main": "server.js",
   "dependencies": {
@@ -17,10 +17,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "node scripts/server.js",
+    "start": "node scripts/server.js",
     "setup": "./build.sh",
     "cleanup": "./build.sh clean",
-    "start": "./build.sh start",
     "lint": "eslint --ext .js scripts"
   },
   "repository": {
