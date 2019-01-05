@@ -21,6 +21,9 @@ typedef long long longlong;
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
+#ifndef LOCAL_ADDRESS
+#define LOCAL_ADDRESS "127.0.0.1"
+#endif
 #ifndef SERVER_PORT
 #define SERVER_PORT 2048
 #endif
@@ -60,6 +63,7 @@ my_bool MySQLNotification_init(UDF_INIT *initid,
     // create a socket that will talk to our node server
     _server = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (_server == -1) {
+       strcpy(message, "Failed to create socket");
        return -1;
     }
 
@@ -67,8 +71,9 @@ my_bool MySQLNotification_init(UDF_INIT *initid,
     memset(&saddr, 0, sizeof(saddr));
     saddr.sin_family = AF_INET;
     saddr.sin_port = htons(0);
-    saddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    saddr.sin_addr.s_addr = inet_addr(LOCAL_ADDRESS);
     if (bind(_server, (struct sockaddr*)&saddr, sizeof(saddr)) != 0) {
+        sprintf(message, "Failed to bind to %s", LOCAL_ADDRESS);
         return -1;
     }
 
@@ -78,7 +83,7 @@ my_bool MySQLNotification_init(UDF_INIT *initid,
     remote.sin_port = htons(SERVER_PORT);
     remote.sin_addr.s_addr = inet_addr(SERVER_ADDRESS);
     if (connect(_server, (struct sockaddr*)&remote, sizeof(remote)) != 0) {
-        strcpy(message, "Failed to connect to server on port 2048");
+        sprintf(message, "Failed to connect to server %s:%d", SERVER_ADDRESS, SERVER_PORT);
         return -1;
     }  
 
