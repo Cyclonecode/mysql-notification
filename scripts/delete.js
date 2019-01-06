@@ -4,11 +4,12 @@ const mysql = require('mysql')
 // parse any arguments
 const argv = require('minimist')(process.argv.slice(2))
 
-const MYSQL_USERNAME = argv.u ? argv.u : 'root'
-const MYSQL_PASSWORD = argv.p ? argv.p : ''
-const MYSQL_DATABASE = argv.n ? argv.n : 'mysql_note'
-const MYSQL_HOSTNAME = argv.h ? argv.h : 'localhost'
-const RECORD_ID = argv.i ? parseInt(argv.i) : false
+const MYSQL_USERNAME = argv.user ? argv.user : 'root'
+const MYSQL_PASSWORD = argv.pass ? argv.pass : ''
+const MYSQL_DATABASE = argv.database ? argv.database : 'mysql_note'
+const MYSQL_HOSTNAME = argv.host ? argv.host : 'localhost'
+
+const id = argv.id || parseInt(argv.id)
 
 const con = mysql.createConnection({
   host: MYSQL_HOSTNAME,
@@ -22,8 +23,7 @@ con.connect(function(err) {
     console.log('Failed to connect')
     throw err
   }
-  let sql = 'DELETE FROM post' + (RECORD_ID ? ' WHERE id = ' + RECORD_ID : '')
-  console.log(sql)
+  let sql = 'DELETE FROM post' + (id ? ' WHERE id = ' + id : '')
   con.query(sql, (err, result) => {
     if (err) {
       throw err

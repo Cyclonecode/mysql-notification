@@ -10,9 +10,9 @@ let connections = []
 // parse any arguments
 const argv = require('minimist')(process.argv.slice(2))
 
-const SERVER_PORT = argv.p ? parseInt(argv.p) : 2048
-const WEBSOCKET_PORT = argv.w ? parseInt(argv.w) : 8080
-const SERVER_ADDR = argv.h ? argv.h.replace(/['"]+/g, '') : '127.0.0.1'
+const SERVER_PORT = argv.port ? parseInt(argv.port) : 2048
+const WEBSOCKET_PORT = argv.websocket ? parseInt(argv.websocket) : 8080
+const SERVER_ADDR = argv.host ? argv.host.replace(/['"]+/g, '') : '127.0.0.1'
 
 // create a listening socket
 net.createServer((sock) => {

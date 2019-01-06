@@ -102,13 +102,13 @@ Start the server with the default settings:
 
 Start the server at a specific address and port:    
     
-    npm run start -- -p 2048 -h localhost -w 8080
+    npm run start -- --port 2048 --host localhost --websocket 8080
     
 - Notice, that the `index.html` will be created if it does not yet exists.
 - Go to address **http://localhost/<install_dir>/index.html** in your browser and start receiving notifications from your database.
-- The `-p` argument can be used to specify which server port listen on.
-- The `-w` argument can be used to specify which websocket port to open.
-- The `-h` argument can be used to specify which address to bind to.
+- The `--port` argument can be used to specify which server port listen on.
+- The `--websocket` argument can be used to specify which websocket port to open.
+- The `--host` argument can be used to specify which address to bind to.
 
 By default the server is running on port **2048** and the websocket on port **8080**.
 
@@ -116,28 +116,48 @@ By default the server is running on port **2048** and the websocket on port **80
 
 You can then test the behavior by running queries against your database:
 
-Insert trigger
-
     mysql -u<user> -p<pass> <database> -e"INSERT INTO post VALUES(1, 'title', 'content', 'url');"
 
-Update trigger
+Insert trigger.
 
     mysql -u<user> -p<pass> <database> -e"UPDATE post SET title = 'updated title' WHERE id = 1;"
 
-Delete trigger
+Update trigger.
 
     mysql -u<user> -p<pass> <database> -e"DELETE FROM post WHERE id = 1"
+
+Delete trigger.
 
 You may also use the supplied node scripts to insert/update and delete records:
 
     npm run insert
     
-Insert a single record into the post table.
+Insert a single record into the post table using default values.
 
-    npm run delete -- -i 3
+    npm run insert -- --title mytitle --content mycontent --image myurl
+
+Insert a single record into the post table using custom values.
+
+    npm run update -- --id 3 --title newtitle --content newcontent --image newurl
+
+Update a record and changing some values.
+
+    npm run delete -- --id 3
 
 Delete a single post with id equal to 3 from the post table.
 
     npm run delete
     
 Delete all records from the post table.
+
+    npm run select -- --id 3
+    
+Display a single row from the post table.
+
+    npm run select
+
+Display all rows in the post table.
+
+You can also specify connection credentials for mysql in all the above commands:
+
+    npm run select -- --host localhost --user user --pass pass --database database
