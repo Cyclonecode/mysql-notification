@@ -127,3 +127,17 @@ Update trigger
 Delete trigger
 
     mysql -u<user> -p<pass> <database> -e"DELETE FROM post WHERE id = 1"
+
+You may also use the supplied node scripts to insert/update and delete records:
+
+    npm run insert
+    
+Insert a single record into the post table.
+
+    npm run delete -- -i 3
+
+Delete a single post with id equal to 3 from the post table.
+
+    npm run delete
+    
+Delete all records from the post table.

@@ -5,6 +5,7 @@
   "main": "server.js",
   "dependencies": {
     "minimist": "^1.2.0",
+    "mysql": "^2.16.0",
     "websocket": "^1.0.28"
   },
   "devDependencies": {
@@ -20,7 +21,10 @@
     "start": "node scripts/server.js",
     "setup": "./build.sh",
     "cleanup": "./build.sh clean",
-    "lint": "eslint --ext .js scripts"
+    "lint": "eslint --ext .js scripts",
+    "insert": "node scripts/insert.js",
+    "update": "node scripts/update.js",
+    "delete": "node scripts/delete.js"
   },
   "repository": {
     "type": "git",
