@@ -1,11 +1,13 @@
 {
   "name": "mysql-notification",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Example of a user defined function (UDF) in MySQL",
   "main": "server.js",
   "dependencies": {
+    "cross-env": "^5.2.0",
     "minimist": "^1.2.0",
     "mysql": "^2.16.0",
+    "pm2": "^3.2.7",
     "sprintf-js": "^1.1.2",
     "websocket": "^1.0.28"
   },
@@ -15,9 +17,13 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node scripts/server.js",
+    "start": "cross-env NODE_ENV=production pm2 start ./scripts/server.js -- $PM2_ARGS",
+    "dev": "node ./scripts/server.js",
+    "pm2": "node_modules/.bin/pm2",
     "setup": "./build.sh",
+    "build": "./build.sh",
     "cleanup": "./build.sh clean",
+    "clean": "./build.sh clean",
     "lint": "eslint --ext .js scripts",
     "insert": "node scripts/insert.js",
     "update": "node scripts/update.js",
