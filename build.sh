@@ -63,5 +63,5 @@ chmod 0444 ${MYSQL_PLUGIN_DIR}/${TARGET_FILE}.so
 if [ $? -eq 0 ] && [ "$1" == 'start' ];
 then
   mysql -u${MYSQL_USER} -p${MYSQL_PASSWORD} < bin/test.sql
-  node ./scripts/server.js -p${SERVER_PORT} -w${WEBSOCKET_PORT} -h\"${SERVER_ADDRESS}\"
+  node ./scripts/server.js --port ${SERVER_PORT} --websocket ${WEBSOCKET_PORT} --host \"${SERVER_ADDRESS}\"
 fi
