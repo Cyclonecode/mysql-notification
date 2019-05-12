@@ -41,16 +41,11 @@ sudo apt-get install libmysqld-dev
 
 ```
 brew install mysql mysql-client
-brew services start mysql
 ```
 
-You can find the location of the mysql headers by executing:
+To find the location of the mysql headers you can execute:
 
-    find / -name mysql.h 2>/dev/null
-
-### OSX
-
-    brew info mysql-client
+    mysql_config --include
 
 # Installation
 
@@ -58,11 +53,10 @@ You can find the location of the mysql headers by executing:
 
       npm install
 
-- Setup your user defined function (UDF) by adding the shared library into mysqls plugin folder, this folder
-can be located by executing `SHOW VARIABLES LIKE 'plugin_dir';` from the mysql client:
+- Setup your user defined function (UDF) by adding the shared library into the mysql plugin folder:
 
-      mysql -u<user> -p<pass> -e"SHOW VARIABLES LIKE 'plugin_dir'"
-      cp mysql_notification.so /usr/local/mysql/lib/plugin/.
+      PLUGIN_DIR=`mysql_config --plugindir`
+      cp mysql_notification.so $PLUGIN_DIR/.
 
 - Tell mysql about the UDF:
 
