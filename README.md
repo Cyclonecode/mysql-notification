@@ -27,7 +27,7 @@ $ gcc -c -Wall -fpic mysql-notification.c -o mysql-notification.o -I/path/mysql/
 $ gcc -shared -o mysql_notification.so mysql-notification.o
 ```
 
-Notice that you'll need to have the mysql headers installed on your system. 
+Notice that you'll need to have the mysql headers installed on your system.
 Using linux this can be done by running:
 
 ### Linux
@@ -41,16 +41,11 @@ sudo apt-get install libmysqld-dev
 
 ```
 brew install mysql mysql-client
-brew services start mysql
 ```
 
-You can find the location of the mysql headers by executing:
+To find the location of the mysql headers you can execute:
 
-    find / -name mysql.h 2>/dev/null
-
-### OSX
-
-    brew info mysql-client
+    mysql_config --include
 
 # Installation
 
@@ -58,11 +53,10 @@ You can find the location of the mysql headers by executing:
 
       npm install
 
-- Setup your user defined function (UDF) by adding the shared library into mysqls plugin folder, this folder 
-can be located by executing `SHOW VARIABLES LIKE 'plugin_dir';` from the mysql client:
+- Setup your user defined function (UDF) by adding the shared library into the mysql plugin folder:
 
-      mysql -u<user> -p<pass> -e"SHOW VARIABLES LIKE 'plugin_dir'"
-      cp mysql_notification.so /usr/local/mysql/lib/plugin/.
+      PLUGIN_DIR=`mysql_config --plugindir`
+      cp mysql_notification.so $PLUGIN_DIR/.
 
 - Tell mysql about the UDF:
 
@@ -72,26 +66,26 @@ can be located by executing `SHOW VARIABLES LIKE 'plugin_dir';` from the mysql c
 
 ```
 DELIMITER @@
-CREATE TRIGGER <triggerName> AFTER INSERT ON <table> 
-FOR EACH ROW 
-BEGIN 
-  SELECT MySQLNotification(NEW.id, 2) INTO @x; 
+CREATE TRIGGER <triggerName> AFTER INSERT ON <table>
+FOR EACH ROW
+BEGIN
+  SELECT MySQLNotification(NEW.id, 2) INTO @x;
 END@@
 CREATE TRIGGER <triggerName> AFTER UPDATE ON <table>
-FOR EACH ROW 
-BEGIN 
-  SELECT MySQLNotification(NEW.id, 3) INTO @x; 
+FOR EACH ROW
+BEGIN
+  SELECT MySQLNotification(NEW.id, 3) INTO @x;
 END@@
 CREATE TRIGGER <triggerName> AFTER DELETE ON <table>
-FOR EACH ROW 
-BEGIN 
-  SELECT MySQLNotification(OLD.id, 4) INTO @x; 
+FOR EACH ROW
+BEGIN
+  SELECT MySQLNotification(OLD.id, 4) INTO @x;
 END@@
 DELIMITER ;
 ```
 
 You may also import import the supplied dump file located under **bin/test.sql**, this
-will create a database called **mysql_note**, register the mysql plugin and create triggers for 
+will create a database called **mysql_note**, register the mysql plugin and create triggers for
 **INSERT**, **UPDATE**, **DELETE** queries on the **post** table:
 
     mysql -u<user> -p<pass> < bin/test.sql
@@ -101,15 +95,15 @@ will create a database called **mysql_note**, register the mysql plugin and crea
 Start the server with the default settings:
 
     npm run dev
-    
+
 To build and run the application in production using pm2:
 
     npm run start
 
-Start the server at a specific address and port:    
-    
+Start the server at a specific address and port:
+
     npm run start -- --port 2048 --host localhost --websocket 8080
-    
+
 - Notice, that the `index.html` will be created if it does not yet exists.
 - Go to address **http://localhost/<install_dir>/index.html** in your browser and start receiving notifications from your database.
 - The `--port` argument can be used to specify which server port listen on.
@@ -137,7 +131,7 @@ Delete trigger.
 You may also use the supplied node scripts to insert/update and delete records:
 
     npm run insert
-    
+
 Insert a single record into the post table using default values.
 
     npm run insert -- --title mytitle --content mycontent --image myurl
@@ -153,11 +147,11 @@ Update a record and changing some values.
 Delete a single post with id equal to 3 from the post table.
 
     npm run delete
-    
+
 Delete all records from the post table.
 
     npm run select -- --id 3
-    
+
 Display a single row from the post table.
 
     npm run select
@@ -166,4 +160,4 @@ Display all rows in the post table.
 
 You can also specify connection credentials for mysql in all the above commands:
 
-    npm run select -- --host localhost --user user --pass pass --database database
+    npm run select -- --host localhost --port 3306 --user user --pass pass --database database
