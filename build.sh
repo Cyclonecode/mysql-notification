@@ -2,7 +2,7 @@
 
 COMPILER=cc
 TARGET_DIR=./mysql-plugin/src
-TARGET_FILE=mysql_notification
+TARGET_FILE=${TARGET_FILE:-mysql_notification}
 MYSQL_INCLUDE_DIR=${MYSQL_INCLUDE_DIR:-/usr/include/mysql}
 MYSQL_PLUGIN_DIR=${MYSQL_PLUGIN_DIR:-/usr/lib/mysql/plugin}
 SERVER_PORT=${SERVER_PORT:-2048}
