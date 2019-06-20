@@ -15,7 +15,7 @@ if (!title && !content && !image) {
 
 db.con.connect(function(err) {
   if (err) {
-    console.log('Failed to connect')
+    console.error('Failed to connect')
     throw err
   }
   let sql = 'UPDATE post SET '
@@ -34,7 +34,7 @@ db.con.connect(function(err) {
     if (err) {
       throw err
     }
-    console.log('Updated ' + result.affectedRows + ' record(s)')
+    console.info('Updated ' + result.affectedRows + ' record(s)')
     process.exit(0)
   })
 })

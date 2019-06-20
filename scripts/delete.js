@@ -5,7 +5,7 @@ const id = db.argv.id || parseInt(db.argv.id)
 
 db.con.connect(function(err) {
   if (err) {
-    console.log('Failed to connect')
+    console.error('Failed to connect')
     throw err
   }
   let sql = 'DELETE FROM post' + (id ? ' WHERE id = ' + id : '')
@@ -13,7 +13,7 @@ db.con.connect(function(err) {
     if (err) {
       throw err
     }
-    console.log('Removed ' + result.affectedRows + ' record(s)')
+    console.info('Removed ' + result.affectedRows + ' record(s)')
     process.exit(0)
   })
 })
