@@ -5,6 +5,7 @@
   "main": "server.js",
   "dependencies": {
     "cross-env": "^5.2.0",
+    "lodash": "^4.17.14",
     "minimist": "^1.2.0",
     "mysql": "^2.17.1",
     "pm2": "^3.5.1",
