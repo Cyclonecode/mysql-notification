@@ -112,6 +112,20 @@ Start the server at a specific address and port:
 
 By default the server is running on port **2048** and the websocket on port **8080**.
 
+## SSL
+
+If you like to run the server over https you could use the `ssl`, `key` and `cert` arguments:
+
+    npm run start -- --port 2048 --host example.com --websocket 8080 --ssl=1 --key=./server.key --cert=./server.crt
+
+Another way is to set the following variables in your environment:
+
+    SSL_ENABLED=1
+    SSL_KEY=./server.key
+    SSL_CERTIFICATE=./server.crt
+
+Notice that the ssl key and certificate files need to be readable by the application.
+
 # Testing
 
 You can then test the behavior by running queries against your database:

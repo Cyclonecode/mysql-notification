@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 const WebSocketServer = require('websocket').server
-const http = require('http')
 const net = require('net')
 const fs = require('fs')
 
@@ -9,10 +8,25 @@ let connections = []
 
 // parse any arguments
 const argv = require('minimist')(process.argv.slice(2))
+const http = require(process.env.SSL_ENABLED || argv.ssl ? 'https' : 'http')
 
 const SERVER_PORT = argv.port ? parseInt(argv.port) : 2048
 const WEBSOCKET_PORT = argv.websocket ? parseInt(argv.websocket) : 8080
 const SERVER_ADDR = argv.host ? argv.host.replace(/['"]+/g, '') : '127.0.0.1'
+
+const config = Object.assign({}, argv, process.env)
+
+let credentials = {}
+
+if (config.SSL_ENABLED || config.ssl) {
+  const privateKey = fs.readFileSync(config.SSL_KEY || config.key, 'utf8')
+  const certificate = fs.readFileSync(config.SSL_CERTIFICATE || config.cert, 'utf8')
+
+  credentials = {
+    key: privateKey,
+    cert: certificate
+  }
+}
 
 // create a listening socket
 net.createServer((sock) => {
@@ -31,7 +45,7 @@ net.createServer((sock) => {
 }).listen(SERVER_PORT)
 
 // create a http server
-const server = http.createServer((request, response) => {
+const server = http.createServer(credentials,(request, response) => {
   console.log((new Date()) + ' Received request for ' + request.url)
   response.writeHead(404)
   response.end()
@@ -56,7 +70,8 @@ function originIsAllowed (origin) {
 }
 
 function createTemplate () {
-  var output = '<!DOCTYPE html>\n' +
+  const protocol = config.SSL_ENABLED || argv.ssl ? 'wss' : 'ws'
+  const output = '<!DOCTYPE html>\n' +
         '<html>\n' +
         '    <head>\n' +
         '        <title>Example of a user defined function (UDF) in MySQL</title>\n' +
@@ -68,7 +83,7 @@ function createTemplate () {
         '                crossorigin="anonymous"></script>\n' +
         '        <script>\n' +
         '            $(document).ready(function() {\n' +
-        '               var ws = new WebSocket(\'ws://' + SERVER_ADDR + ':' + WEBSOCKET_PORT + '\', \'echo-protocol\');\n' +
+        '               var ws = new WebSocket(\'' + protocol + '://' + SERVER_ADDR + ':' + WEBSOCKET_PORT + '\', \'echo-protocol\');\n' +
         '               ws.onmessage = function(event) {\n' +
         '                   $(\'body\').append(event.data + "<br />");\n' +
         '               };\n' +
