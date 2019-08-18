@@ -49,6 +49,8 @@ To find the location of the mysql headers you can execute:
 
 # Installation
 
+- The project requires that you have node 10+ installed on your system. You can use `nvm` to use the desired version by running `nvm use` in the root of the project.
+
 - Install modules from **package.json**:
 
       npm install
