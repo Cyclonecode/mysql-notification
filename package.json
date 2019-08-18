@@ -1,21 +1,17 @@
 {
   "name": "mysql-notification",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Example of a user defined function (UDF) in MySQL",
-  "main": "server.js",
   "dependencies": {
     "cross-env": "^5.2.0",
-    "https": "^1.0.0",
-    "lodash": "^4.17.14",
     "minimist": "^1.2.0",
     "mysql": "^2.17.1",
     "pm2": "^3.5.1",
-    "sprintf-js": "^1.1.2",
-    "websocket": "^1.0.28"
+    "websocket": "^1.0.29",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
-    "eslint": "^5.16.0",
-    "esvalidate": "^0.1.3"
+    "eslint": "^6.1.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

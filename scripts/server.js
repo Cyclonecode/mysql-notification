@@ -2,6 +2,18 @@
 const WebSocketServer = require('websocket').server
 const net = require('net')
 const fs = require('fs')
+const { createLogger, format, transports } = require('winston');
+
+const logger = createLogger({
+  level: 'debug',
+  format: format.combine(
+    format.colorize(),
+    format.simple(),
+  ),
+  // You can also comment out the line above and uncomment the line below for JSON format
+  // format: format.json(),
+  transports: [new transports.Console()]
+});
 
 // keeps track of all connected clients
 let connections = []
@@ -19,6 +31,10 @@ const config = Object.assign({}, argv, process.env)
 let credentials = {}
 
 if (config.SSL_ENABLED || config.ssl) {
+  if (!(config.SSL_KEY || config.key) || !(config.SSL_CERTIFICATE || config.cert)) {
+    logger.error('You need to specify a ssl key and certificate.')
+    process.exit(-1)
+  }
   const privateKey = fs.readFileSync(config.SSL_KEY || config.key, 'utf8')
   const certificate = fs.readFileSync(config.SSL_CERTIFICATE || config.cert, 'utf8')
 
@@ -45,13 +61,13 @@ net.createServer((sock) => {
 }).listen(SERVER_PORT)
 
 // create a http server
-const server = http.createServer(credentials,(request, response) => {
-  console.log((new Date()) + ' Received request for ' + request.url)
+const server = http.createServer(credentials, (request, response) => {
+  logger.debug((new Date()) + ' Received request for ' + request.url)
   response.writeHead(404)
   response.end()
 })
 server.listen(WEBSOCKET_PORT, () => {
-  console.log((new Date()) + ' Server is listening on port ' + WEBSOCKET_PORT)
+  logger.info((new Date()) + ' Server is listening ' + SERVER_ADDR + ':' + WEBSOCKET_PORT)
 })
 
 const wsServer = new WebSocketServer({
@@ -96,9 +112,9 @@ function createTemplate () {
 
   fs.writeFile('index.html', output, (err) => {
     if (err) {
-      return console.log(err)
+      return logger.error(err)
     }
-    console.log('Creating index.html file.')
+    logger.info('Creating index.html file.')
   })
 }
 
@@ -110,23 +126,23 @@ wsServer.on('request', (request) => {
   if (!originIsAllowed(request.origin)) {
     // Make sure we only accept requests from an allowed origin
     request.reject()
-    console.log((new Date()) + ' Connection from origin ' + request.origin + ' rejected.')
+    logger.warn((new Date()) + ' Connection from origin ' + request.origin + ' rejected.')
     return
   }
-  var connection = request.accept('echo-protocol', request.origin)
+  const connection = request.accept('echo-protocol', request.origin)
   connections.push(connection)
   connection.on('message', (message) => {
     if (message.type === 'utf8') {
-      console.log('Received Message: ' + message.utf8Data)
+      logger.debug('Received Message: ' + message.utf8Data)
       connection.sendUTF(message.utf8Data)
     } else if (message.type === 'binary') {
-      console.log('Received Binary Message of ' + message.binaryData.length + ' bytes')
+      logger.debug('Received Binary Message of ' + message.binaryData.length + ' bytes')
       connection.sendBytes(message.binaryData)
     }
   })
   connection.on('close', (reasonCode, description) => {
-    let index = connections.indexOf(this)
+    const index = connections.indexOf(this)
     connections.splice(index, 1)
-    console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.')
+    logger.debug((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.')
   })
 })
