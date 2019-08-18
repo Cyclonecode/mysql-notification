@@ -3,7 +3,8 @@
   "version": "1.0.8",
   "description": "Example of a user defined function (UDF) in MySQL",
   "engines": {
-    "node": "^10.0.0"
+    "node": ">= 10.0.0",
+    "npm": ">= 6.0.0"
   },
   "dependencies": {
     "cross-env": "^5.2.0",
@@ -34,6 +35,9 @@
   "repository": {
     "type": "git",
     "url": "git@github.com:Cyclonecode/mysql-notification.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cyclonecode/mysql-notification/issues"
   },
   "author": {
     "name": "Cyclonecode",
