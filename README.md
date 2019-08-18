@@ -120,6 +120,10 @@ If you like to run the server over https you could use the `ssl`, `key` and `cer
 
     npm run start -- --port 2048 --host example.com --websocket 8080 --ssl=1 --key=./server.key --cert=./server.crt
 
+- The `--ssl` states that we should run the server using https.
+- The `--key` argument should point to your ssl certificate key file which must be readable.
+- The `--cert` argument should point to your ssl certificate file which must be readable.
+
 Another way is to set the following variables in your environment:
 
     SSL_ENABLED=1
