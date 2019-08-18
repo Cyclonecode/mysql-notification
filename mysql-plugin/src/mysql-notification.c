@@ -64,7 +64,7 @@ my_bool MySQLNotification_init(UDF_INIT *initid,
     _server = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (_server == -1) {
        strcpy(message, "Failed to create socket");
-       return -1;
+       return 0;
     }
 
     // bind to local address
@@ -74,7 +74,7 @@ my_bool MySQLNotification_init(UDF_INIT *initid,
     saddr.sin_addr.s_addr = inet_addr(LOCAL_ADDRESS);
     if (bind(_server, (struct sockaddr*)&saddr, sizeof(saddr)) != 0) {
         sprintf(message, "Failed to bind to %s", LOCAL_ADDRESS);
-        return -1;
+        return 0;
     }
 
     // connect to server
@@ -84,15 +84,13 @@ my_bool MySQLNotification_init(UDF_INIT *initid,
     remote.sin_addr.s_addr = inet_addr(SERVER_ADDRESS);
     if (connect(_server, (struct sockaddr*)&remote, sizeof(remote)) != 0) {
         sprintf(message, "Failed to connect to server %s:%d", SERVER_ADDRESS, SERVER_PORT);
-        return -1;
-    }  
+        return 0;
+    }
 
     return 0;
 }
 
 void MySQLNotification_deinit(UDF_INIT *initid) {
-    // free any allocated memory here
-    //free((longlong*)initid->ptr);
     // close server socket
     if (_server != -1) {
         close(_server);
@@ -108,7 +106,9 @@ longlong MySQLNotification(UDF_INIT *initid,
     // format a message containing id of row and type of change
     sprintf(packet, "{\"id\":\"%lld\", \"type\":\"%lld\"}", *((longlong*)args->args[0]), *((longlong*)args->args[1]));
 
-    send(_server, packet, strlen(packet), 0);
+    if (_server != -1) {
+        send(_server, packet, strlen(packet), 0);
+    }
 
     return 0;
 }
