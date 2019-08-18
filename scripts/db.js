@@ -14,7 +14,7 @@ const con = mysql.createConnection({
   user: MYSQL_USERNAME,
   password: MYSQL_PASSWORD,
   database: MYSQL_DATABASE,
-  port: MYSQL_PORT
+  port: MYSQL_PORT,
 })
 
 module.exports = {

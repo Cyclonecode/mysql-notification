@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const db = require('./db')
+const logger = require('./logger')
 
 const id = db.argv.id || parseInt(db.argv.id)
 const title = db.argv.title || db.argv.title
@@ -15,7 +16,7 @@ if (!title && !content && !image) {
 
 db.con.connect(function(err) {
   if (err) {
-    console.error('Failed to connect')
+    logger.error('Failed to connect')
     throw err
   }
   let sql = 'UPDATE post SET '
@@ -34,7 +35,7 @@ db.con.connect(function(err) {
     if (err) {
       throw err
     }
-    console.info('Updated ' + result.affectedRows + ' record(s)')
+    logger.info('Updated ' + result.affectedRows + ' record(s)')
     process.exit(0)
   })
 })
