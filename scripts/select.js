@@ -1,19 +1,18 @@
 #!/usr/bin/env node
-const db = require('./db')
+const connection = require('./db').connection
+const argv = require('./db').argv
 const logger = require('./logger')
 
-const id = db.argv.id || parseInt(db.argv.id)
-
-db.con.connect(function(err) {
+connection.connect(function(err) {
   if (err) {
     logger.error('Failed to connect')
     throw err
   }
   let sql = 'SELECT * FROM post'
-  if (id) {
-    sql += ' WHERE id = ' + id
+  if (argv.id) {
+    sql += ' WHERE id = ' + argv.id
   }
-  db.con.query(sql, (err, result) => {
+  connection.query(sql, (err, result) => {
     if (err) {
       throw err
     }

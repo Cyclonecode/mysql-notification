@@ -102,35 +102,60 @@ To build and run the application in production using pm2:
 
     npm run start
 
-Start the server at a specific address and port:
-
-    npm run start -- --port 2048 --host localhost --websocket 8080
-
 - Notice, that the `index.html` will be created if it does not yet exists.
 - Go to address **http://localhost/<install_dir>/index.html** in your browser and start receiving notifications from your database.
-- The `--port` argument can be used to specify which server port listen on.
-- The `--websocket` argument can be used to specify which websocket port to open.
-- The `--host` argument can be used to specify which address to bind to.
 
 By default the server is running on port **2048** and the websocket on port **8080**.
 
-## SSL
+## Configuration
 
-If you like to run the server over https you could use the `ssl`, `key` and `cert` arguments:
+The project is using dotenv for configuration, so you can simply place a `.env` file in the root of the project and set up the following values:
 
-    npm run start -- --port 2048 --host example.com --websocket 8080 --ssl=1 --key=./server.key --cert=./server.crt
+    MYSQL_USERNAME=username
 
-- The `--ssl` states that we should run the server using https.
-- The `--key` argument should point to your ssl certificate key file which must be readable.
-- The `--cert` argument should point to your ssl certificate file which must be readable.
+The database username, default is 'root'.    
+    
+    MYSQL_PASSWORD=password
 
-Another way is to set the following variables in your environment:
+The database password, default is ''.
+
+    MYSQL_DATABASE=database
+
+The database name, default is 'mysql_note'.
+
+    MYSQL_HOSTNAME=hostname
+
+The database hostname, default is 'localhost'.
+
+    MYSQL_PORT=port
+
+The database port, default is 3306.
 
     SSL_ENABLED=1
-    SSL_KEY=./server.key
-    SSL_CERTIFICATE=./server.crt
 
-Notice that the ssl key and certificate files need to be readable by the application.
+Specifies if we would like to use https or not, default ''.
+
+    SSL_KEY=key
+
+The ssl certificate key file to use when https is enabled.
+Notice that this file needs to be readable by the application.
+
+    SSL_CERTIFICATE=certificate
+
+The ssl certificate file to use when https is enabled.
+Notice that this file needs to be readable by the application.
+
+    SERVER_ADDR=address
+
+The address to bind the server to, default is 'localhost'. 
+
+    SERVER_PORT=port
+
+The port on which the server should be listening, default is 2048.
+
+    WEBSOCKET_PORT=port
+
+The websocket port that will be used, default is 8080.
 
 # Testing
 
@@ -177,7 +202,3 @@ Display a single row from the post table.
     npm run select
 
 Display all rows in the post table.
-
-You can also specify connection credentials for mysql in all the above commands:
-
-    npm run select -- --host localhost --port 3306 --user user --pass pass --database database

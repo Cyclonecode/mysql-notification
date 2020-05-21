@@ -1,37 +1,34 @@
 #!/usr/bin/env node
-const db = require('./db')
+const connection = require('./db').connection
+const argv = require('./db').argv
+const sprintf = require('sprintf-js').sprintf
 const logger = require('./logger')
 
-const id = db.argv.id || parseInt(db.argv.id)
-const title = db.argv.title || db.argv.title
-const content = db.argv.content || db.argv.content
-const image = db.argv.image || db.argv.image
-
-if (!id) {
+if (!argv.id) {
   throw new Error('You need to specify an id')
 }
-if (!title && !content && !image) {
+if (!argv.title && !argv.content && !argv.image) {
   throw new Error('You need to specify some value to change.')
 }
 
-db.con.connect(function(err) {
+connection.connect(function(err) {
   if (err) {
     logger.error('Failed to connect')
     throw err
   }
   let sql = 'UPDATE post SET '
-  if (title) {
-    sql += db.sprintf("title = '%s',", title)
+  if (argv.title) {
+    sql += sprintf("title = '%s',", argv.title)
   }
-  if (content) {
-    sql += db.sprintf("content = '%s',", content)
+  if (argv.content) {
+    sql += sprintf("content = '%s',", argv.content)
   }
-  if (image) {
-    sql += db.sprintf("image = '%s',", image)
+  if (argv.image) {
+    sql += sprintf("image = '%s',", argv.image)
   }
   sql = sql.slice(0, -1)
-  sql += db.sprintf(" WHERE id = %d", id)
-  db.con.query(sql, (err, result) => {
+  sql += sprintf(" WHERE id = %d", id)
+  connection.query(sql, (err, result) => {
     if (err) {
       throw err
     }

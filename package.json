@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "cross-env": "^5.2.1",
+    "dotenv": "^8.2.0",
     "minimist": "^1.2.5",
     "mysql": "^2.18.1",
     "pm2": "^3.5.2",

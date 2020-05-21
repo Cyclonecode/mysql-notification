@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+require('dotenv').config()
 const WebSocketServer = require('websocket').server
 const net = require('net')
 const fs = require('fs')
@@ -7,25 +8,23 @@ const logger = require('./logger')
 // keeps track of all connected clients
 let connections = []
 
-// parse any arguments
-const argv = require('minimist')(process.argv.slice(2))
-const http = require(process.env.SSL_ENABLED || argv.ssl ? 'https' : 'http')
+// load configuration
+const config = Object.assign({}, process.env)
 
-const SERVER_PORT = argv.port ? parseInt(argv.port) : 2048
-const WEBSOCKET_PORT = argv.websocket ? parseInt(argv.websocket) : 8080
-const SERVER_ADDR = argv.host ? argv.host.replace(/['"]+/g, '') : '127.0.0.1'
-
-const config = Object.assign({}, argv, process.env)
+const http = require(parseInt(config.SSL_ENABLED) ? 'https' : 'http')
+const SERVER_PORT = parseInt(config.SERVER_PORT || 2048)
+const WEBSOCKET_PORT = parseInt(config.WEBSOCKET_PORT || 8080)
+const SERVER_ADDR = (config.SERVER_ADDR || '127.0.0.1').replace(/['"]+/g, '')
 
 let credentials = {}
 
-if (config.SSL_ENABLED || config.ssl) {
-  if (!(config.SSL_KEY || config.key) || !(config.SSL_CERTIFICATE || config.cert)) {
+if (parseInt(config.SSL_ENABLED)) {
+  if (!(config.SSL_KEY) || !(config.SSL_CERTIFICATE)) {
     logger.error('You need to specify a ssl key and certificate.')
     process.exit(-1)
   }
-  const privateKey = fs.readFileSync(config.SSL_KEY || config.key, 'utf8')
-  const certificate = fs.readFileSync(config.SSL_CERTIFICATE || config.cert, 'utf8')
+  const privateKey = fs.readFileSync(config.SSL_KEY, 'utf8')
+  const certificate = fs.readFileSync(config.SSL_CERTIFICATE, 'utf8')
 
   credentials = {
     key: privateKey,
@@ -75,7 +74,7 @@ function originIsAllowed (origin) {
 }
 
 function createTemplate () {
-  const protocol = config.SSL_ENABLED || argv.ssl ? 'wss' : 'ws'
+  const protocol = parseInt(config.SSL_ENABLED) ? 'wss' : 'ws'
   const output = '<!DOCTYPE html>\n' +
         '<html>\n' +
         '    <head>\n' +

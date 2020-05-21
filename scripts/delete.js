@@ -1,16 +1,15 @@
 #!/usr/bin/env node
-const db = require('./db')
 const logger = require('./logger')
+const connection = require('./db').connection
+const argv = require('./db').argv
 
-const id = db.argv.id || parseInt(db.argv.id)
-
-db.con.connect(function(err) {
+connection.connect(function(err) {
   if (err) {
     logger.error('Failed to connect')
     throw err
   }
-  const sql = 'DELETE FROM post' + (id ? ' WHERE id = ' + id : '')
-  db.con.query(sql, (err, result) => {
+  const sql = 'DELETE FROM post' + (argv.id ? ' WHERE id = ' + argv.id : '')
+  connection.query(sql, (err, result) => {
     if (err) {
       throw err
     }

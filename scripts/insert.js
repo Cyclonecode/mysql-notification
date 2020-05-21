@@ -1,18 +1,20 @@
 #!/usr/bin/env node
-const db = require('./db')
+const connection = require('./db').connection
+const sprintf = require('sprintf-js').sprintf
+const argv = require('./db').argv
 const logger = require('./logger')
 
-const title = db.argv.title || ''
-const content = db.argv.content || ''
-const image = db.argv.image || ''
+const title = argv.title || ''
+const content = argv.content || ''
+const image = argv.image || ''
 
-db.con.connect(function(err) {
+connection.connect(function(err) {
   if (err) {
     logger.error('Failed to connect')
     throw err
   }
-  const sql = db.sprintf("INSERT INTO post VALUES(NULL, '%s', '%s', '%s')", title, content, image)
-  db.con.query(sql, (err, result) => {
+  const sql = sprintf("INSERT INTO post VALUES(NULL, '%s', '%s', '%s')", title, content, image)
+  connection.query(sql, (err, result) => {
     if (err) {
       throw err
     }
