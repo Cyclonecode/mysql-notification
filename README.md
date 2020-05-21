@@ -43,6 +43,12 @@ sudo apt-get install libmysqld-dev
 brew install mysql mysql-client
 ```
 
+Notice that it seems like mysql 8 does not contain the `my_global.h` file, so you might need to install a lower version:
+
+```
+brew install mysql@5.7 mysql-client@5.7
+```
+
 To find the location of the mysql headers you can execute:
 
     mysql_config --include
