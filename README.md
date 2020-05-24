@@ -20,6 +20,12 @@ Copies the shared library to the mysql plugin dir specified by `MYSQL_PLUGIN_DIR
     make clean
 
 Removes temporary files.
+
+If you set the correct environment variables you can also compile and install the extension using npm:
+
+    npm run compile
+    npm run install
+    npm run clean
     
 ## Compiling manually
 
