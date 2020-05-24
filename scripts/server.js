@@ -82,9 +82,9 @@ function createTemplate () {
         '        <meta charset="UTF-8">\n' +
         '        <meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
         '        <script\n' +
-        '                src="https://code.jquery.com/jquery-3.3.1.slim.min.js"\n' +
-        '                integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="\n' +
-        '                crossorigin="anonymous"></script>\n' +
+        '        src="https://code.jquery.com/jquery-3.5.1.slim.min.js"\n' +
+        '        integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="\n' +
+        '        crossorigin="anonymous"></script>\n' +
         '        <script>\n' +
         '            $(document).ready(function() {\n' +
         '               var ws = new WebSocket(\'' + protocol + '://' + SERVER_ADDR + ':' + WEBSOCKET_PORT + '\', \'echo-protocol\');\n' +
