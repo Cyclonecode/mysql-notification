@@ -10,6 +10,7 @@ Makefile
 
 .dep.inc
 index.html
+.env
 
 # object files
 *.o
