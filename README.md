@@ -6,25 +6,28 @@ A simple example of using a user defined function (UDF) in mysql to make real-ti
 
 ## Compiling
 
-Notice that you may build the extension and install it using the supplied shell script:
+You can find a makefile under the `mysql-plugin/src`
+ folder, which can be used to compile and build the plugin.
+ 
+    make MYSQL_INCLUDE_DIR/usr/local/mysql/include
+    
+Compiles and builds the shared library. You will need to set `MYSQL_INCLUDE_DIR` before compiling.
 
-    sudo npm run build
+    make install MYSQL_PLUGIN_DIR/usr/local/mysql/plugin
 
-To clean up any files from a previous build you can execute:
+Copies the shared library to the mysql plugin dir specified by `MYSQL_PLUGIN_DIR` in the environment.
 
-     npm run clean
+    make clean
 
-You can also build the extension, import the database and start the node server:
-
-     npm run start
-
+Removes temporary files.
+    
 ## Compiling manually
 
 - You first need to build your shared library using:
 
 ```
 $ gcc -c -Wall -fpic mysql-notification.c -o mysql-notification.o -I/path/mysql/headers
-$ gcc -shared -o mysql_notification.so mysql-notification.o
+$ gcc -shared -o mysql-notification.so mysql-notification.o
 ```
 
 Notice that you'll need to have the mysql headers installed on your system.
@@ -64,11 +67,11 @@ To find the location of the mysql headers you can execute:
 - Setup your user defined function (UDF) by adding the shared library into the mysql plugin folder:
 
       PLUGIN_DIR=`mysql_config --plugindir`
-      cp mysql_notification.so $PLUGIN_DIR/.
+      cp mysql-notification.so $PLUGIN_DIR/.
 
 - Tell mysql about the UDF:
 
-      CREATE FUNCTION MySQLNotification RETURNS INTEGER SONAME 'mysql_notification.so';
+      CREATE FUNCTION MySQLNotification RETURNS INTEGER SONAME 'mysql-notification.so';
 
 - Create triggers for INSERT/UPDATE/DELETE:
 
