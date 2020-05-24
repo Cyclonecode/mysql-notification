@@ -27,7 +27,7 @@ connection.connect(function(err) {
     sql += sprintf("image = '%s',", argv.image)
   }
   sql = sql.slice(0, -1)
-  sql += sprintf(" WHERE id = %d", id)
+  sql += sprintf(" WHERE id = %d", argv.id)
   connection.query(sql, (err, result) => {
     if (err) {
       throw err
