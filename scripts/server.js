@@ -15,7 +15,8 @@ const http = require(parseInt(config.SSL_ENABLED) ? 'https' : 'http')
 const SERVER_PORT = parseInt(config.SERVER_PORT || 2048)
 const WEBSOCKET_PORT = parseInt(config.WEBSOCKET_PORT || 8080)
 const SERVER_ADDR = (config.SERVER_ADDR || '127.0.0.1').replace(/['"]+/g, '')
-
+const AUTO_ACCEPT_CONNECTION = parseInt(config.AUTO_ACCEPT_CONNECTION) ? true : false
+const ALLOWED_ORIGINS = (config.ALLOWED_ORIGINS ? config.ALLOWED_ORIGINS.replace(/\s/g, '').toLowerCase().split(',').filter(it => it !== '') : ['*'])
 let credentials = {}
 
 if (parseInt(config.SSL_ENABLED)) {
@@ -65,11 +66,13 @@ const wsServer = new WebSocketServer({
   // facilities built into the protocol and the browser.  You should
   // *always* verify the connection's origin and decide whether or not
   // to accept it.
-  autoAcceptConnections: false
+  autoAcceptConnections: AUTO_ACCEPT_CONNECTION,
 })
 
 function originIsAllowed (origin) {
-  // put logic here to detect whether the specified origin is allowed.
+  if (ALLOWED_ORIGINS[0] !== '*') {
+    return ALLOWED_ORIGINS.find(it => origin.toLowerCase() === it);
+  }
   return true
 }
 

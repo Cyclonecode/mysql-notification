@@ -2,9 +2,44 @@
 
 A simple example of using a user defined function (UDF) in mysql to make real-time notifications on a table change. This project consists of a mysql plugin that setups a server socket that receives messages from a trigger connected to INSERT, UPDATE, DELETE operations on a specific table in the database. The server will then send a message to a nodejs server that in turn will bounce this notification to any connected http client over a websocket.
 
-## Install
-
 ## Compiling
+
+### Manually
+
+- You first need to build your shared library using:
+
+```
+$ gcc -c -Wall -fpic mysql-notification.c -o mysql-notification.o -I/path/mysql/headers
+$ gcc -shared -o mysql-notification.so mysql-notification.o
+```
+
+Notice that you'll need to have the mysql headers installed on your system.
+Using linux this can be done by running:
+
+#### Linux
+
+```
+sudo apt-get update
+sudo apt-get install libmysqld-dev
+```
+
+#### OSX
+
+```
+brew install mysql mysql-client
+```
+
+Notice that it seems like mysql 8 does not contain the `my_global.h` file, so you might need to install a lower version:
+
+```
+brew install mysql@5.7 mysql-client@5.7
+```
+
+To find the location of the mysql headers you can execute:
+
+    mysql_config --include
+
+### Using make
 
 You can find a makefile under the `mysql-plugin/src`
  folder, which can be used to compile and build the plugin.
@@ -26,41 +61,6 @@ If you set the correct environment variables you can also compile and install th
     npm run compile
     npm run install
     npm run clean
-    
-## Compiling manually
-
-- You first need to build your shared library using:
-
-```
-$ gcc -c -Wall -fpic mysql-notification.c -o mysql-notification.o -I/path/mysql/headers
-$ gcc -shared -o mysql-notification.so mysql-notification.o
-```
-
-Notice that you'll need to have the mysql headers installed on your system.
-Using linux this can be done by running:
-
-### Linux
-
-```
-sudo apt-get update
-sudo apt-get install libmysqld-dev
-```
-
-### OSX
-
-```
-brew install mysql mysql-client
-```
-
-Notice that it seems like mysql 8 does not contain the `my_global.h` file, so you might need to install a lower version:
-
-```
-brew install mysql@5.7 mysql-client@5.7
-```
-
-To find the location of the mysql headers you can execute:
-
-    mysql_config --include
 
 # Installation
 
@@ -171,6 +171,14 @@ The port on which the server should be listening, default is 2048.
     WEBSOCKET_PORT=port
 
 The websocket port that will be used, default is 8080.
+
+    AUTO_ACCEPT_CONNECTION=1
+
+Auto accept any connetions, default 0.
+
+    ALLOWED_ORIGINS=localhost
+
+White list of origins allowed to connect, default is '*'.
 
 # Testing
 
