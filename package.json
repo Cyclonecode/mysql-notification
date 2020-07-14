@@ -11,7 +11,7 @@
     "dotenv": "^8.2.0",
     "minimist": "^1.2.5",
     "mysql": "^2.18.1",
-    "pm2": "^3.5.2",
+    "pm2": "^4.4.0",
     "websocket": "^1.0.31",
     "winston": "^3.2.1"
   },
@@ -24,7 +24,7 @@
     "dev": "node ./scripts/server.js",
     "pm2": "node_modules/.bin/pm2",
     "compile": "(cd ./mysql-plugin/src; make)",
-    "install": "(cd ./mysql-plugin/src; make install)",
+    "setup": "(cd ./mysql-plugin/src; make install)",
     "clean": "(cd ./mysql-plugin/src; make clean)",
     "lint": "eslint --ext .js scripts",
     "insert": "node scripts/insert.js",
