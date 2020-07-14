@@ -11,7 +11,7 @@ if (!argv.title && !argv.content && !argv.image) {
   throw new Error('You need to specify some value to change.')
 }
 
-connection.connect(function(err) {
+connection.connect((err) => {
   if (err) {
     logger.error('Failed to connect')
     throw err

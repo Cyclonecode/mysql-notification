@@ -8,7 +8,7 @@ const title = argv.title || ''
 const content = argv.content || ''
 const image = argv.image || ''
 
-connection.connect(function(err) {
+connection.connect((err) => {
   if (err) {
     logger.error('Failed to connect')
     throw err

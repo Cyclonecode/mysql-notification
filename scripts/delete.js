@@ -3,7 +3,7 @@ const logger = require('./logger')
 const connection = require('./db').connection
 const argv = require('./db').argv
 
-connection.connect(function(err) {
+connection.connect((err) => {
   if (err) {
     logger.error('Failed to connect')
     throw err
