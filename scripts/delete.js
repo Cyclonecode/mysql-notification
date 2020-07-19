@@ -3,18 +3,12 @@ const logger = require('./logger');
 const connection = require('./db').connection;
 const argv = require('./db').argv;
 
-connection.connect((err) => {
+const sql = 'DELETE FROM post' + (argv.id ? ' WHERE id = ?' : '');
+const data = argv.id ? [argv.id] : [];
+connection.query(sql, data, (err, result) => {
   if (err) {
-    logger.error('Failed to connect');
     throw err;
   }
-  const sql = 'DELETE FROM post' + (argv.id ? ' WHERE id = ?' : '');
-  const data = argv.id ? [argv.id] : [];
-  connection.query(sql, data, (err, result) => {
-    if (err) {
-      throw err;
-    }
-    logger.info('Removed ' + result.affectedRows + ' record(s)');
-  });
-  connection.end();
+  logger.info('Removed ' + result.affectedRows + ' record(s)');
 });
+connection.end();

@@ -1,5 +1,6 @@
 require('dotenv').config();
 const mysql = require('mysql');
+const logger = require('./logger');
 // parse any arguments
 const argv = require('minimist')(process.argv.slice(2));
 
@@ -15,6 +16,13 @@ const connection = mysql.createConnection({
   password: MYSQL_PASSWORD,
   database: MYSQL_DATABASE,
   port: MYSQL_PORT,
+});
+
+connection.connect((err) => {
+  if (err) {
+    logger.error('Failed to connect');
+    throw err;
+  }
 });
 
 module.exports = {
