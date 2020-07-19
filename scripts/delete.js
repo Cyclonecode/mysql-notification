@@ -15,6 +15,6 @@ connection.connect((err) => {
       throw err;
     }
     logger.info('Removed ' + result.affectedRows + ' record(s)');
-    process.exit(0);
   });
+  connection.end();
 });

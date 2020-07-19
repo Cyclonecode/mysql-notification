@@ -147,6 +147,8 @@ wsServer.on('request', (request) => {
   });
   connection.on('close', (reasonCode, description) => {
     const index = connections.indexOf(this);
+    // TODO: Do we need to close the connection
+    // connections[index].close();
     connections.splice(index, 1);
     logger.debug(
       new Date() + ' Peer ' + connection.remoteAddress + ' disconnected.',

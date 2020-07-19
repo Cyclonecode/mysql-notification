@@ -21,6 +21,6 @@ connection.connect((err) => {
     for (let i = 0; i < result.length; i++) {
       logger.info('', result[i]);
     }
-    process.exit(0);
   });
+  connection.end();
 });
