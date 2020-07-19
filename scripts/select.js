@@ -18,9 +18,9 @@ connection.connect((err) => {
     if (err) {
       throw err;
     }
-    for (let i = 0; i < result.length; i++) {
-      logger.info('', result[i]);
-    }
+    result.forEach(it => {
+      logger.info('', it);
+    });
   });
   connection.end();
 });
