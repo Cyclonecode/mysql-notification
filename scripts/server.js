@@ -83,7 +83,7 @@ function originIsAllowed(origin) {
   return true;
 }
 
-function createTemplate() {
+(function createTemplate() {
   const protocol = parseInt(config.SSL_ENABLED) ? 'wss' : 'ws';
   const output =
     '<!DOCTYPE html>\n' +
@@ -121,11 +121,7 @@ function createTemplate() {
     }
     logger.info('Creating index.html file.');
   });
-}
-
-if (!fs.existsSync('index.html')) {
-  createTemplate();
-}
+})();
 
 wsServer.on('request', (request) => {
   if (!originIsAllowed(request.origin)) {
