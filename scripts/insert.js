@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 const connection = require('./db').connection
-const sprintf = require('sprintf-js').sprintf
 const argv = require('./db').argv
 const logger = require('./logger')
 
@@ -13,8 +12,13 @@ connection.connect((err) => {
     logger.error('Failed to connect')
     throw err
   }
-  const sql = sprintf("INSERT INTO post VALUES(NULL, '%s', '%s', '%s')", title, content, image)
-  connection.query(sql, (err, result) => {
+  const sql = "INSERT INTO post VALUES(NULL, ?, ?, ?)"
+  const data = [
+    title,
+    content,
+    image
+  ]
+  connection.query(sql, data, (err, result) => {
     if (err) {
       throw err
     }

@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 const connection = require('./db').connection
 const argv = require('./db').argv
-const sprintf = require('sprintf-js').sprintf
 const logger = require('./logger')
 
 if (!argv.id) {
@@ -17,18 +16,23 @@ connection.connect((err) => {
     throw err
   }
   let sql = 'UPDATE post SET '
+  const data = []
   if (argv.title) {
-    sql += sprintf("title = '%s',", argv.title)
+    sql += 'title = ?,'
+    data.push(argv.title)
   }
   if (argv.content) {
-    sql += sprintf("content = '%s',", argv.content)
+    sql += 'content = ?,'
+    data.push(argv.content)
   }
   if (argv.image) {
-    sql += sprintf("image = '%s',", argv.image)
+    sql += 'image = ?,'
+    data.push(argv.image)
   }
   sql = sql.slice(0, -1)
-  sql += sprintf(" WHERE id = %d", argv.id)
-  connection.query(sql, (err, result) => {
+  sql += ' WHERE id = ?'
+  data.push(argv.id)
+  connection.query(sql, data, (err, result) => {
     if (err) {
       throw err
     }

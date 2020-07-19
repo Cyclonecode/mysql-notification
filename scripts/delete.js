@@ -8,8 +8,9 @@ connection.connect((err) => {
     logger.error('Failed to connect')
     throw err
   }
-  const sql = 'DELETE FROM post' + (argv.id ? ' WHERE id = ' + argv.id : '')
-  connection.query(sql, (err, result) => {
+  const sql = 'DELETE FROM post' + (argv.id ? ' WHERE id = ?' : '')
+  const data = argv.id ? [argv.id] : []
+  connection.query(sql, data, (err, result) => {
     if (err) {
       throw err
     }
