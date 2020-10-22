@@ -5,11 +5,11 @@ const logger = require('./logger');
 
 if (!argv.id) {
   logger.error(`You need to specify an id`);
-  process.exit(-1)
+  process.exit(-1);
 }
 if (!(argv.title && argv.content && argv.image)) {
   logger.error(`You need to specify some value to change.`);
-  process.exit(-1)
+  process.exit(-1);
 }
 
 let sql = 'UPDATE post SET ';
