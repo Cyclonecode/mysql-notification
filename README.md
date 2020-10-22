@@ -179,6 +179,7 @@ Auto accept any connetions, default 0.
     ALLOWED_ORIGINS=localhost
 
 White list of origins allowed to connect, default is '*'.
+Multiple origins can be separated by a ',' e.g localhost,example.com,192.168.33.10.
 
 # Testing
 
