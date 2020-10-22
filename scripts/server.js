@@ -121,7 +121,7 @@ function originIsAllowed(origin) {
     }
     logger.info('Creating index.html file.');
   });
-})();
+}());
 
 wsServer.on('request', (request) => {
   if (!originIsAllowed(request.origin)) {

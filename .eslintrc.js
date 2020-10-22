@@ -1,11 +1,11 @@
 module.exports = {
     "env": {
-        "es6": true,
+        "es2021": true,
         "node": true
     },
     "extends": "eslint:recommended",
     "parserOptions": {
-        "ecmaVersion": 2018
+        "ecmaVersion": 12
     },
     "rules": {
         "accessor-pairs": "error",
@@ -213,7 +213,7 @@ module.exports = {
         "no-useless-return": "error",
         "no-var": "off",
         "no-void": "error",
-        "no-warning-comments": "error",
+        "no-warning-comments": "off",
         "no-whitespace-before-property": "error",
         "no-with": "error",
         "nonblock-statement-body-position": "error",
