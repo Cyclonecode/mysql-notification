@@ -56,13 +56,13 @@ net
 
 // create a http server
 const server = http.createServer(credentials, (request, response) => {
-  logger.debug(new Date() + ' Received request for ' + request.url);
+  logger.debug(new Date() + ` Received request for ${request.url}`);
   response.writeHead(404);
   response.end();
 });
 server.listen(WEBSOCKET_PORT, () => {
   logger.info(
-    new Date() + ' Server is listening ' + SERVER_ADDR + ':' + WEBSOCKET_PORT,
+    new Date() + ` Server is listening ${SERVER_ADDR}:${WEBSOCKET_PORT}`,
   );
 });
 
@@ -83,7 +83,7 @@ function originIsAllowed(origin) {
   return true;
 }
 
-(function createTemplate() {
+(() => {
   const protocol = parseInt(config.SSL_ENABLED) ? 'wss' : 'ws';
   const output =
     '<!DOCTYPE html>\n' +
@@ -121,14 +121,14 @@ function originIsAllowed(origin) {
     }
     logger.info('Creating index.html file.');
   });
-}());
+})();
 
 wsServer.on('request', (request) => {
   if (!originIsAllowed(request.origin)) {
     // Make sure we only accept requests from an allowed origin
     request.reject();
     logger.warn(
-      new Date() + ' Connection from origin ' + request.origin + ' rejected.',
+      new Date() + ` Connection from origin ${request.origin} rejected.`,
     );
     return;
   }
@@ -136,11 +136,11 @@ wsServer.on('request', (request) => {
   connections.push(connection);
   connection.on('message', (message) => {
     if (message.type === 'utf8') {
-      logger.debug('Received Message: ' + message.utf8Data);
+      logger.debug(`Received Message: ${message.utf8Data}`);
       connection.sendUTF(message.utf8Data);
     } else if (message.type === 'binary') {
       logger.debug(
-        'Received Binary Message of ' + message.binaryData.length + ' bytes',
+        `Received Binary Message of ${message.binaryData.length} bytes`,
       );
       connection.sendBytes(message.binaryData);
     }
@@ -151,7 +151,7 @@ wsServer.on('request', (request) => {
     // connections[index].close();
     connections.splice(index, 1);
     logger.debug(
-      new Date() + ' Peer ' + connection.remoteAddress + ' disconnected.',
+      new Date() + ` Peer ${connection.remoteAddress} disconnected.`,
     );
   });
 });

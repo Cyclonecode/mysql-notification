@@ -13,6 +13,6 @@ connection.query(sql, data, (err, result) => {
   if (err) {
     throw err;
   }
-  logger.info('Inserted ' + result.affectedRows + ' record(s)');
+  logger.info(`Inserted ${result.affectedRows} record(s)`);
 });
 connection.end();

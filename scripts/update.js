@@ -4,10 +4,12 @@ const argv = require('./db').argv;
 const logger = require('./logger');
 
 if (!argv.id) {
-  throw new Error('You need to specify an id');
+  logger.error(`You need to specify an id`);
+  process.exit(-1)
 }
-if (!argv.title && !argv.content && !argv.image) {
-  throw new Error('You need to specify some value to change.');
+if (!(argv.title && argv.content && argv.image)) {
+  logger.error(`You need to specify some value to change.`);
+  process.exit(-1)
 }
 
 let sql = 'UPDATE post SET ';
@@ -31,6 +33,6 @@ connection.query(sql, data, (err, result) => {
   if (err) {
     throw err;
   }
-  logger.info('Updated ' + result.affectedRows + ' record(s)');
+  logger.info(`Updated ${result.affectedRows} record(s)`);
 });
 connection.end();
