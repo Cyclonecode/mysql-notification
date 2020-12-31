@@ -56,7 +56,7 @@ net
 
 // create a http server
 const server = http.createServer(credentials, (req, res) => {
-  fs.readFile(__dirname + '/../' + req.url, function (err,data) {
+  fs.readFile(__dirname + '/../' + req.url, function (err, data) {
     if (err) {
       res.writeHead(404);
       res.end(JSON.stringify(err));
@@ -134,9 +134,7 @@ wsServer.on('request', (req) => {
   if (!originIsAllowed(url.hostname)) {
     // Make sure we only accept requests from an allowed origin
     req.reject();
-    logger.warn(
-      new Date() + ` Connection from origin ${req.origin} rejected.`,
-    );
+    logger.warn(new Date() + ` Connection from origin ${req.origin} rejected.`);
     return;
   }
   const connection = req.accept('echo-protocol', req.origin);
