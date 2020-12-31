@@ -55,10 +55,16 @@ net
   .listen(SERVER_PORT);
 
 // create a http server
-const server = http.createServer(credentials, (request, response) => {
-  logger.debug(new Date() + ` Received request for ${request.url}`);
-  response.writeHead(404);
-  response.end();
+const server = http.createServer(credentials, (req, res) => {
+  fs.readFile(__dirname + '/../' + req.url, function (err,data) {
+    if (err) {
+      res.writeHead(404);
+      res.end(JSON.stringify(err));
+      return;
+    }
+    res.writeHead(200);
+    res.end(data);
+  });
 });
 server.listen(WEBSOCKET_PORT, () => {
   logger.info(
@@ -123,16 +129,17 @@ function originIsAllowed(origin) {
   });
 })();
 
-wsServer.on('request', (request) => {
-  if (!originIsAllowed(request.origin)) {
+wsServer.on('request', (req) => {
+  const url = new URL(req.origin);
+  if (!originIsAllowed(url.hostname)) {
     // Make sure we only accept requests from an allowed origin
-    request.reject();
+    req.reject();
     logger.warn(
-      new Date() + ` Connection from origin ${request.origin} rejected.`,
+      new Date() + ` Connection from origin ${req.origin} rejected.`,
     );
     return;
   }
-  const connection = request.accept('echo-protocol', request.origin);
+  const connection = req.accept('echo-protocol', req.origin);
   connections.push(connection);
   connection.on('message', (message) => {
     if (message.type === 'utf8') {
