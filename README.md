@@ -2,6 +2,28 @@
 
 A simple example of using a user defined function (UDF) in mysql to make real-time notifications on a table change. This project consists of a mysql plugin that setups a server socket that receives messages from a trigger connected to INSERT, UPDATE, DELETE operations on a specific table in the database. The server will then send a message to a nodejs server that in turn will bounce this notification to any connected http client over a websocket.
 
+## Docker
+
+The project has two Dockerfiles that can be used to build and start two services.
+One running the node application, which includes the http server, websocket server and also the socket server
+acting as a bridge for data sent from the second container.
+The second container runs the mysql server and uses a small bootstrap script to compile the mysql plugin and then
+install the database and setup the needed triggers.
+
+### docker-compose
+
+    docker-compose build
+
+Build the containers.
+
+    docker-compose up -d
+
+Runs both services.
+
+    docker-compose down
+
+Terminate both containers.
+
 ## Compiling
 
 ### Manually

@@ -1,0 +1,12 @@
+node_modules
+.nvmrc
+.prettierrc
+ecosystem.config.js
+LICENSE
+README.md
+CODE_OF_CONDUCT.md
+.gitignore
+.git
+.eslintrc.js
+index.html
+.idea

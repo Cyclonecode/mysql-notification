@@ -1,0 +1,2 @@
+root ALL=(ALL) ALL
+docker ALL=(ALL) NOPASSWD: ALL

@@ -1,0 +1,17 @@
+FROM mysql:5.7
+
+ARG SERVER_ADDRESS=127.0.0.1
+ARG SERVER_PORT=2048
+
+ENV SERVER_ADDRESS=$SERVER_ADDRESS
+ENV SERVER_PORT=$SERVER_PORT
+
+RUN apt-get update && apt-get install -y sudo gcc make libmysqlclient-dev
+RUN useradd -m docker && echo "docker:docker" | chpasswd && adduser docker sudo
+USER root
+ADD docker/sudo.txt /etc/sudoers
+RUN chmod 440 /etc/sudoers
+USER docker
+WORKDIR /tmp
+COPY mysql-plugin/src src
+COPY x.c .

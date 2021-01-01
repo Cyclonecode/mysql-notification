@@ -1,0 +1,56 @@
+version: '3'
+services:
+  node:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        - SERVER_ADDRESS=$SERVER_ADDRESS
+        - SERVER_PORT=$SERVER_PORT
+        - WEBSOCKET_PORT=$WEBSOCKET_PORT
+    container_name: mysqlnote_node
+    ports:
+     - "$WEBSOCKET_PORT:$WEBSOCKET_PORT"
+     - "$SERVER_PORT:$SERVER_PORT"
+    environment:
+      - WEBSOCKET_PORT=$WEBSOCKET_PORT
+      - MYSQL_HOSTNAME=mysql
+      - SERVER_ADDRESS=$SERVER_ADDRESS
+      - SERVER_PORT=$SERVER_PORT
+    depends_on:
+      - mysql
+    networks:
+      main:
+        aliases:
+          - node
+  mysql:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.mysql
+      args:
+        - SERVER_ADDRESS=$SERVER_ADDRESS
+        - SERVER_PORT=$SERVER_PORT
+    container_name: mysqlnote_mysql
+    ports:
+      - "$MYSQL_PORT:$MYSQL_PORT"
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_USER=$MYSQL_USERNAME
+      - MYSQL_PASSWORD=$MYSQL_PASSWORD
+      - MYSQL_DATABASE=$MYSQL_DATABASE
+      - MYSQL_PORT=$MYSQL_PORT
+      - SERVER_PORT=$SERVER_PORT
+      - SERVER_ADDRESS=node
+    # command: --innodb-use-native-aio=0
+    volumes:
+      - ./docker/my.cnf:/etc/mysql/mysql.conf.d/my.cnf
+      - ./mysql-plugin:/mysql-plugin
+      - ./docker/bootstrap:/docker-entrypoint-initdb.d
+      - ./bin/test.sql:/data/application/test.sql
+    networks:
+      main:
+        aliases:
+          - mysql
+networks:
+  main:
