@@ -19,6 +19,7 @@ typedef long long longlong;
 #include <ctype.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <netdb.h>
 #include <arpa/inet.h>
 
 #ifndef LOCAL_ADDRESS
@@ -48,6 +49,7 @@ my_bool MySQLNotification_init(UDF_INIT *initid,
     // longlong* i = malloc(sizeof(*i));
     //initid->ptr = (char*)i;
     struct sockaddr_in remote, saddr;
+    struct hostent* phe;
 
     // check the arguments format
     if (args->arg_count != 2) {
@@ -71,7 +73,9 @@ my_bool MySQLNotification_init(UDF_INIT *initid,
     memset(&saddr, 0, sizeof(saddr));
     saddr.sin_family = AF_INET;
     saddr.sin_port = htons(0);
-    saddr.sin_addr.s_addr = inet_addr(LOCAL_ADDRESS);
+    // saddr.sin_addr.s_addr = inet_addr(LOCAL_ADDRESS);
+    // We need this to if running in a container.
+    saddr.sin_addr.s_addr = htonl(INADDR_ANY);
     if (bind(_server, (struct sockaddr*)&saddr, sizeof(saddr)) != 0) {
         sprintf(message, "Failed to bind to %s", LOCAL_ADDRESS);
         return 0;
@@ -81,11 +85,17 @@ my_bool MySQLNotification_init(UDF_INIT *initid,
     memset(&remote, 0, sizeof(remote));
     remote.sin_family = AF_INET;
     remote.sin_port = htons(SERVER_PORT);
-    remote.sin_addr.s_addr = inet_addr(SERVER_ADDRESS);
+    phe = gethostbyname(SERVER_ADDRESS);
+    if (phe) {
+        remote.sin_addr.s_addr = *((unsigned long*) phe->h_addr);
+    } else {
+        remote.sin_addr.s_addr = inet_addr(SERVER_ADDRESS);
+    }
     if (connect(_server, (struct sockaddr*)&remote, sizeof(remote)) != 0) {
         sprintf(message, "Failed to connect to server %s:%d", SERVER_ADDRESS, SERVER_PORT);
         return 0;
     }
+    sprintf(message, "Conntected to server %s:%d\n", SERVER_ADDRESS, SERVER_PORT);
 
     return 0;
 }
