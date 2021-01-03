@@ -11,11 +11,14 @@ let connections = [];
 // load configuration
 const config = Object.assign({}, process.env);
 
-const http = require(parseInt(config.SSL_ENABLED) ? 'https' : 'http');
-const SERVER_PORT = parseInt(config.SERVER_PORT || 2048);
-const WEBSOCKET_PORT = parseInt(config.WEBSOCKET_PORT || 8080);
-const SERVER_ADDR = (config.SERVER_ADDR || '127.0.0.1').replace(/['"]+/g, '');
-const AUTO_ACCEPT_CONNECTION = parseInt(config.AUTO_ACCEPT_CONNECTION);
+const http = require(parseInt(config.SSL_ENABLED, 10) ? 'https' : 'http');
+const SERVER_PORT = parseInt(config.SERVER_PORT || 2048, 10);
+const WEBSOCKET_PORT = parseInt(config.WEBSOCKET_PORT || 8080, 10);
+const SERVER_ADDRESS = (config.SERVER_ADDRESS || '127.0.0.1').replace(
+  /['"]+/g,
+  '',
+);
+const AUTO_ACCEPT_CONNECTION = parseInt(config.AUTO_ACCEPT_CONNECTION, 10);
 const ALLOWED_ORIGINS = config.ALLOWED_ORIGINS
   ? config.ALLOWED_ORIGINS.replace(/\s/g, '')
       .toLowerCase()
@@ -44,7 +47,6 @@ net
     sock.on('data', (data) => {
       sock.end();
       sock.destroy();
-
       // send data to all connected clients
       for (let i = 0; i < connections.length; i++) {
         connections[i].sendUTF(data);
@@ -52,7 +54,7 @@ net
     });
     sock.on('close', (data) => {});
   })
-  .listen(SERVER_PORT);
+  .listen(SERVER_PORT, SERVER_ADDRESS);
 
 // create a http server
 const server = http.createServer(credentials, (req, res) => {
@@ -66,9 +68,9 @@ const server = http.createServer(credentials, (req, res) => {
     res.end(data);
   });
 });
-server.listen(WEBSOCKET_PORT, () => {
+server.listen(WEBSOCKET_PORT, SERVER_ADDRESS, () => {
   logger.info(
-    new Date() + ` Server is listening ${SERVER_ADDR}:${WEBSOCKET_PORT}`,
+    new Date() + ` Server is listening ${SERVER_ADDRESS}:${WEBSOCKET_PORT}`,
   );
 });
 
@@ -107,7 +109,7 @@ function originIsAllowed(origin) {
     "               var ws = new WebSocket('" +
     protocol +
     '://' +
-    SERVER_ADDR +
+    SERVER_ADDRESS +
     ':' +
     WEBSOCKET_PORT +
     "', 'echo-protocol');\n" +
