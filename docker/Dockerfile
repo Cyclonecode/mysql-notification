@@ -1,7 +1,4 @@
-FROM node:14.15.3
-
-RUN apt update
-RUN apt install nano
+FROM node:14.15.4
 
 ARG WEBSOCKET_PORT=8080
 ARG SERVER_PORT=2048
