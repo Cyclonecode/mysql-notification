@@ -3,7 +3,7 @@
   "version": "1.2.4",
   "description": "Example of a user defined function (UDF) in MySQL",
   "engines": {
-    "node": ">= 14.15.3",
+    "node": ">= 14.15.4",
     "npm": ">= 6.0.0"
   },
   "dependencies": {
