@@ -32,7 +32,19 @@
     "insert": "node scripts/insert.js",
     "update": "node scripts/update.js",
     "delete": "node scripts/delete.js",
-    "select": "node scripts/select.js"
+    "select": "node scripts/select.js",
+    "build": "docker-compose build",
+    "up": "docker-compose up -d",
+    "down": "docker-compose down",
+    "restart": "docker-compose restart",
+    "logs:node": "docker-compose logs -f node || true",
+    "logs:mysql": "docker-compose logs -f mysql || true",
+    "exec:node": "docker-compose exec node /bin/bash",
+    "exec:mysql": "docker-compose exec mysql /bin/bash",
+    "insert:node": "docker-compose exec node node scripts/insert.js",
+    "update:node": "docker-compose exec node node scripts/update.js",
+    "delete:node": "docker-compose exec node node scripts/delete.js",
+    "select:node": "docker-compose exec node node scripts/select.js"
   },
   "repository": {
     "type": "git",
