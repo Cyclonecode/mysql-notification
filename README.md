@@ -13,16 +13,70 @@ install the database and setup the needed triggers.
 ### docker-compose
 
     docker-compose build
+    # or
+    npm run build
 
-Build the containers.
+Build the containers:
 
     docker-compose up -d
+    # or
+    npm run up
 
 Runs both services.
 
     docker-compose down
+    # or 
+    npm run down
 
 Terminate both containers.
+
+    docker-compose logs node
+    # or
+    npm run logs:node
+
+Show logs for the node service.
+
+    docker-compose logs mysql
+    # or
+    npm run logs:mysql
+
+Show logs for the mysql service.
+
+    docker-compose exec node /bin/bash
+    # or
+    npm run exec:node
+
+Executes a shell in the node container.
+
+    docker-compose exec mysql /bin/bash
+    # or
+    npm run exec:mysql
+
+Executes a shell in the mysql container.
+
+    docker-compose exec node node scripts/insert.js [--] [--title=text] [--content=text] [--image=text]
+    # or
+    npm run insert:node [--] [--title=text] [--content=text] [--image=text]
+
+Inserts a record into the database.
+
+    docker-compose exec node node scripts/update.js -- --id=ID [--title=text] [--content=text] [--image=text]
+    # or
+    npm run update:node  -- --id=ID [--title=text] [--content=text] [--image=text]
+
+Updates a record in the database.
+
+    docker-compose exec node node scripts/delete.js [-- --id=ID]
+    # or
+    npm run delete:node [-- --id=ID]
+
+Deletes all or a single record from the database.
+
+    docker-compose exec node node scripts/select.js [-- --id=ID]
+    # or
+    npm run select:node [-- --id=ID]
+
+Selects all or a single record from the database.
 
 ## Compiling
 
