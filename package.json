@@ -3,21 +3,20 @@
   "version": "1.2.4",
   "description": "Example of a user defined function (UDF) in MySQL",
   "engines": {
-    "node": ">= 14.16.0",
-    "npm": ">= 6.0.0"
+    "node": ">= 14.18.0"
   },
   "dependencies": {
-    "cross-env": "^7.0.2",
-    "dotenv": "^8.2.0",
+    "cross-env": "^7.0.3",
+    "dotenv": "^8.6.0",
     "minimist": "^1.2.5",
     "mysql": "^2.18.1",
     "pm2": "^4.5.6",
-    "websocket": "^1.0.32",
+    "websocket": "^1.0.34",
     "winston": "^3.3.3"
   },
   "devDependencies": {
-    "eslint": "^7.11.0",
-    "prettier": "^2.1.2"
+    "eslint": "^7.32.0",
+    "prettier": "^2.4.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
