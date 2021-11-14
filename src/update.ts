@@ -1,13 +1,11 @@
-#!/usr/bin/env node
-const connection = require('./db').connection;
-const argv = require('./db').argv;
-const logger = require('./logger');
+import { connection, argv } from './db';
+import { logger } from './logger';
 
 if (!argv.id) {
   logger.error(`You need to specify an id`);
   process.exit(-1);
 }
-if (!(argv.title && argv.content && argv.image)) {
+if (!argv.title && !argv.content && !argv.image) {
   logger.error(`You need to specify some value to change.`);
   process.exit(-1);
 }

@@ -59,7 +59,7 @@ Removes temporary files.
 If you set the correct environment variables you can also compile and install the extension using npm:
 
     npm run compile
-    npm run install
+    npm run setup
     npm run clean
 
 # Installation
@@ -109,13 +109,21 @@ will create a database called **mysql_note**, register the mysql plugin and crea
 
 # Running
 
+For production mode you first need to build:
+
+    npm run build
+
 Start the server with the default settings:
 
     npm run dev
 
-To build and run the application in production using pm2:
+To run the application in production using pm2:
 
     npm run start
+
+To run the application using typescript:
+
+    npm run start-ts
 
 - Notice, that the `index.html` will be created if it does not yet exists.
 - Go to address **http://localhost/<install_dir>/index.html** in your browser and start receiving notifications from your database.
@@ -174,7 +182,7 @@ The websocket port that will be used, default is 8080.
 
     AUTO_ACCEPT_CONNECTION=1
 
-Auto accept any connetions, default 0.
+Auto accept any connections, default 0.
 
     ALLOWED_ORIGINS=localhost
 

@@ -1,7 +1,5 @@
-#!/usr/bin/env node
-const logger = require('./logger');
-const connection = require('./db').connection;
-const argv = require('./db').argv;
+import { connection, argv } from './db';
+import { logger } from './logger';
 
 const sql = 'DELETE FROM post' + (argv.id ? ' WHERE id = ?' : '');
 const data = argv.id ? [argv.id] : [];

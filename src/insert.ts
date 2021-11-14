@@ -1,7 +1,5 @@
-#!/usr/bin/env node
-const connection = require('./db').connection;
-const argv = require('./db').argv;
-const logger = require('./logger');
+import { connection, argv } from './db';
+import { logger } from './logger';
 
 const title = argv.title || '';
 const content = argv.content || '';
