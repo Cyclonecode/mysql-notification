@@ -107,7 +107,7 @@ import(`${parseInt(config.SSL_ENABLED || '', 10) ? 'https' : 'http'}`).then(
         '        <meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
         '        <script>\n' +
         '        document.addEventListener("DOMContentLoaded", function(event) {\n' +
-        '          const ws = new WebSocket(' + url + ', "echo-protocol");\n' +
+        '          const ws = new WebSocket("' + url + '", "echo-protocol");\n' +
         '          ws.onmessage = function(event) {\n' +
         '            document.body.innerHTML += event.data + "<br />";\n' +
         '          };\n' +
