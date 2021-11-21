@@ -1,42 +1,21 @@
-import dotenv from 'dotenv';
 import { server as WebSocketServer, connection } from 'websocket';
 import net from 'net';
 import fs from 'fs';
+import config from './config'
 import { logger } from './logger';
-
-dotenv.config();
 
 // keeps track of all connected clients
 const connections: connection[] = [];
 
-// load configuration
-const config = Object.assign({}, process.env);
-
-const SERVER_PORT = parseInt(config.SERVER_PORT || '', 10) || 2048;
-const WEBSOCKET_PORT = parseInt(config.WEBSOCKET_PORT || '', 10) || 80;
-const SERVER_ADDRESS = (config.SERVER_ADDRESS || '127.0.0.1').replace(
-  /['"]+/g,
-  ''
-);
-const AUTO_ACCEPT_CONNECTION = !!parseInt(
-  config.AUTO_ACCEPT_CONNECTION || '',
-  10
-);
-const ALLOWED_ORIGINS = config.ALLOWED_ORIGINS
-  ? config.ALLOWED_ORIGINS.replace(/\s/g, '')
-      .toLowerCase()
-      .split(',')
-      .filter((it) => it !== '')
-  : ['*'];
 let credentials = {};
 
-if (parseInt(config.SSL_ENABLED || '')) {
-  if (!config.SSL_KEY || !config.SSL_CERTIFICATE) {
+if (config.ssl.enabled) {
+  if (!config.ssl.key || !config.ssl.cert) {
     logger.error('You need to specify a ssl key and certificate.');
     process.exit(-1);
   }
-  const privateKey = fs.readFileSync(config.SSL_KEY, 'utf8');
-  const certificate = fs.readFileSync(config.SSL_CERTIFICATE, 'utf8');
+  const privateKey = fs.readFileSync(config.ssl.key, 'utf8');
+  const certificate = fs.readFileSync(config.ssl.cert, 'utf8');
 
   credentials = {
     key: privateKey,
@@ -57,9 +36,9 @@ net
     });
     sock.on('close', (data) => {});
   })
-  .listen(SERVER_PORT, SERVER_ADDRESS);
+  .listen(config.server.port, config.server.address);
 
-import(`${parseInt(config.SSL_ENABLED || '', 10) ? 'https' : 'http'}`).then(
+import(`${config.ssl.enabled ? 'https' : 'http'}`).then(
   (http) => {
     // create a http server
     const server = http.createServer(credentials, (req: any, res: any) => {
@@ -73,9 +52,9 @@ import(`${parseInt(config.SSL_ENABLED || '', 10) ? 'https' : 'http'}`).then(
         res.end(data);
       });
     });
-    server.listen(WEBSOCKET_PORT, SERVER_ADDRESS, () => {
+    server.listen(config.server.websocketPort, config.server.address, () => {
       logger.info(
-        new Date() + ` Server is listening ${SERVER_ADDRESS}:${WEBSOCKET_PORT}`
+        new Date() + ` Server is listening ${config.server.address}:${config.server.websocketPort}`
       );
     });
 
@@ -86,18 +65,12 @@ import(`${parseInt(config.SSL_ENABLED || '', 10) ? 'https' : 'http'}`).then(
       // facilities built into the protocol and the browser.  You should
       // *always* verify the connection's origin and decide whether or not
       // to accept it.
-      autoAcceptConnections: AUTO_ACCEPT_CONNECTION,
+      autoAcceptConnections: config.autoAcceptConnections,
     });
 
-    function originIsAllowed(origin: string) {
-      return !!ALLOWED_ORIGINS.find(
-        (it) => it === '*' || it === origin.toLowerCase()
-      );
-    }
-
     (() => {
-      const protocol = parseInt(config.SSL_ENABLED || '') ? 'wss' : 'ws';
-      const url = `${protocol}://${SERVER_ADDRESS}:${WEBSOCKET_PORT}`;
+      const protocol = config.ssl.enabled ? 'wss' : 'ws';
+      const url = `${protocol}://${config.server.address}:${config.server.websocketPort}`;
       const output =
         '<!DOCTYPE html>\n' +
         '<html>\n' +
@@ -107,7 +80,9 @@ import(`${parseInt(config.SSL_ENABLED || '', 10) ? 'https' : 'http'}`).then(
         '        <meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
         '        <script>\n' +
         '        document.addEventListener("DOMContentLoaded", function(event) {\n' +
-        '          const ws = new WebSocket("' + url + '", "echo-protocol");\n' +
+        '          const ws = new WebSocket("' +
+        url +
+        '", "echo-protocol");\n' +
         '          ws.onmessage = function(event) {\n' +
         '            document.body.innerHTML += event.data + "<br />";\n' +
         '          };\n' +

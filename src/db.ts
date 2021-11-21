@@ -1,17 +1,16 @@
-import dotenv from 'dotenv';
 import mysql from 'mysql';
+import config from './config'
 import { logger } from './logger';
 // parse any arguments
 import minimist from 'minimist';
 const argv = minimist(process.argv.slice(2));
-dotenv.config();
 
 const connection = mysql.createConnection({
-  host: process.env.MYSQL_HOSTNAME || 'localhost',
-  user: process.env.MYSQL_USERNAME || 'root',
-  password: process.env.MYSQL_PASSWORD || '',
-  database: process.env.MYSQL_DATABASE || 'mysql_note',
-  port: parseInt(process.env.MYSQL_PORT || '3306'),
+  host: config.db.host,
+  user: config.db.username,
+  password: config.db.password,
+  database: config.db.name,
+  port: config.db.port,
 });
 
 connection.connect((err) => {
