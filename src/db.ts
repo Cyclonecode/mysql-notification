@@ -1,5 +1,5 @@
 import mysql from 'mysql';
-import config from './config'
+import config from './config';
 import { logger } from './logger';
 // parse any arguments
 import minimist from 'minimist';

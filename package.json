@@ -35,7 +35,7 @@
     "test": "jest",
     "start": "cross-env NODE_ENV=production pm2 start ./build/server.js -- $PM2_ARGS",
     "build": "rm -rf build && tsc --build",
-    "start-ts": "NODE_ENV=production node build/server.js",
+    "start-ts": "NODE_ENV=production node build/src/server.js",
     "dev": "ts-node-dev --respawn -- src/server.ts",
     "pm2": "node_modules/.bin/pm2",
     "format": "prettier --write \"src/*.ts\"",
