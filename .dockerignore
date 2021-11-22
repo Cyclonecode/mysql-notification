@@ -1,0 +1,17 @@
+build/*
+node_modules/*
+.git
+.idea
+README.md
+LICENSE
+index.html
+CODE_OF_CONDUCT.md
+.prettierrc
+.nvmrc
+.gitignore
+.eslintrc
+.env-dist
+tests
+coverage
+build
+.github
