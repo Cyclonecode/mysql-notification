@@ -1,7 +1,7 @@
 module.exports = {
   apps: [{
     name: 'mysql-notification',
-    script: 'build/src/server.js',
+    script: 'build/src/index.js',
     instances: 1,
     autorestart: true,
     watch: false,

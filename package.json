@@ -22,6 +22,7 @@
     "winston": "^3.3.3"
   },
   "devDependencies": {
+    "@types/http-server": "^0.12.1",
     "@types/jest": "^27.0.3",
     "@typescript-eslint/eslint-plugin": "^5.3.1",
     "@typescript-eslint/parser": "^5.3.1",
@@ -33,10 +34,10 @@
   },
   "scripts": {
     "test": "jest",
-    "start": "cross-env NODE_ENV=production pm2 start ./build/server.js -- $PM2_ARGS",
+    "start": "cross-env NODE_ENV=production pm2 start ./build/src/index.js -- $PM2_ARGS",
     "build": "rm -rf build && tsc --build",
-    "start-ts": "NODE_ENV=production node build/src/server.js",
-    "dev": "ts-node-dev --respawn -- src/server.ts",
+    "start-ts": "NODE_ENV=production node build/src/index.js",
+    "dev": "ts-node-dev --respawn -- src/index.ts",
     "pm2": "node_modules/.bin/pm2",
     "format": "prettier --write \"src/*.ts\"",
     "compile": "(cd ./mysql-plugin/src; make)",
