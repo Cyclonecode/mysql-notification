@@ -6,15 +6,10 @@ ARG SERVER_PORT
 ENV SERVER_ADDRESS=$SERVER_ADDRESS
 ENV SERVER_PORT=$SERVER_PORT
 
-RUN apt-get update && apt-get install -y curl sudo gcc make libmysqlclient-dev
+RUN apt-get update && apt-get install -y sudo gcc make libmysqlclient-dev
 RUN useradd -m docker && echo "docker:docker" | chpasswd && adduser docker sudo
-USER root
 ADD docker/sudo.txt /etc/sudoers
 RUN chmod 440 /etc/sudoers
-USER docker
 WORKDIR /tmp
 COPY mysql-plugin/src src
-
-WORKDIR /tmp/src
-USER root
-RUN make clean && make && make install
+RUN cd src && make clean && make && make install
