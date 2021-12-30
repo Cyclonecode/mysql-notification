@@ -189,6 +189,22 @@ Auto accept any connections, default 0.
 White list of origins allowed to connect, default is '*'.
 Multiple origins can be separated by a ',' e.g localhost,example.com,192.168.33.10.
 
+# Docker
+
+You can run the containers using:
+
+    docker-compose up
+
+The above will build the images if they do not exist and then start the containers.
+By default you can access the container at http://localhost:7777/index.html
+
+You can use the following `npm` scripts for testing:
+
+    npm run docker:insert -- --title=foo --content=bar --image=example
+    npm run docker:update -- --id=1 --title=foo --content=bar --image=example
+    npm run docker:select -- --id=1
+    npm run docker:delete -- --id=1
+
 # Testing
 
 You can then test the behavior by running queries against your database:
