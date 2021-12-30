@@ -7,7 +7,7 @@ services:
         - MYSQL_USERNAME=$MYSQL_USERNAME
         - MYSQL_PASSWORD=$MYSQL_PASSWORD
         - MYSQL_DATABASE=$MYSQL_DATABASE
-        - MYSQL_HOSTNAME=$MYSQL_HOSTNAME
+        - MYSQL_HOSTNAME=mysql
         - MYSQL_PORT=$MYSQL_PORT
         - SSL_ENABLED=$SSL_ENABLED
         - SSL_KEY=$SSL_KEY
@@ -34,3 +34,40 @@ services:
       - WEBSOCKET_PORT=$WEBSOCKET_PORT
       - AUTO_ACCEPT_CONNECTION=$AUTO_ACCEPT_CONNECTION
       - ALLOWED_ORIGINS=$ALLOWED_ORIGINS
+    networks:
+      main:
+        ipv4_address: 172.25.0.2
+        aliases:
+          - node
+  mysql:
+    build:
+      context: .
+      dockerfile: 'docker/Dockerfile.mysql'
+      args:
+        - SERVER_ADDRESS=172.25.0.2
+        - SERVER_PORT=$SERVER_PORT
+    ports:
+      - "$MYSQL_PORT:$MYSQL_PORT"
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_USER=$MYSQL_USERNAME
+      - MYSQL_PASSWORD=$MYSQL_PASSWORD
+      - MYSQL_DATABASE=$MYSQL_DATABASE
+      - MYSQL_PORT=$MYSQL_PORT
+      - SERVER_PORT=$SERVER_PORT
+      - SERVER_ADDRESS=$SERVER_ADDRESS
+    networks:
+      main:
+        ipv4_address: 172.25.0.3
+        aliases:
+          - mysql
+    volumes:
+      - ./bin:/docker-entrypoint-initdb.d
+networks:
+  main:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/16
+          gateway: 172.25.0.1
