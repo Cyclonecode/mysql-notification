@@ -3,6 +3,7 @@ services:
   app:
     build:
       context: '.'
+      dockerfile: 'docker/Dockerfile'
       args:
         - MYSQL_DATABASE=$MYSQL_DATABASE
         - MYSQL_PORT=$MYSQL_PORT
