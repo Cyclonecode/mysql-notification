@@ -44,9 +44,9 @@ enum TRIGGER_TYPE {
 my_bool MySQLNotification_init(UDF_INIT *initid,
                                UDF_ARGS *args,
                                char *message) {
-    int server = -1;
+    int* server = malloc(sizeof(server));
     struct sockaddr_in remote, saddr;
-    initid->ptr = (char*)&server;
+    initid->ptr = (char*)server;
 
     // check the arguments format
     if (args->arg_count != 2) {
@@ -60,8 +60,8 @@ my_bool MySQLNotification_init(UDF_INIT *initid,
     }
 
     // create a socket that will talk to our node server
-    server = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    if (server == -1) {
+    *server = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if (*server == -1) {
        strcpy(message, "Failed to create socket");
        return 1;
     }
@@ -72,7 +72,7 @@ my_bool MySQLNotification_init(UDF_INIT *initid,
     saddr.sin_port = htons(0);
     // saddr.sin_addr.s_addr = inet_addr(LOCAL_ADDRESS);
     saddr.sin_addr.s_addr = INADDR_ANY;
-    if (bind(server, (struct sockaddr*)&saddr, sizeof(saddr)) != 0) {
+    if (bind(*server, (struct sockaddr*)&saddr, sizeof(saddr)) != 0) {
         sprintf(message, "Failed to bind to %s", LOCAL_ADDRESS);
         return 1;
     }
@@ -82,7 +82,7 @@ my_bool MySQLNotification_init(UDF_INIT *initid,
     remote.sin_family = AF_INET;
     remote.sin_port = htons(SERVER_PORT);
     remote.sin_addr.s_addr = inet_addr(SERVER_ADDRESS);
-    if (connect(server, (struct sockaddr*)&remote, sizeof(remote)) != 0) {
+    if (connect(*server, (struct sockaddr*)&remote, sizeof(remote)) != 0) {
         sprintf(message, "Failed to connect to server %s:%d", SERVER_ADDRESS, SERVER_PORT);
         return 1;
     }
@@ -95,6 +95,7 @@ void MySQLNotification_deinit(UDF_INIT *initid) {
     int* server = (int*)initid->ptr;
     if (server && *server != -1) {
         close(*server);
+        free(server);
     }
 }
 
