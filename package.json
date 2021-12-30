@@ -48,10 +48,10 @@
     "update": "npx ts-node src/update.ts",
     "delete": "npx ts-node src/delete.ts",
     "select": "npx ts-node src/select.ts",
-    "docker:insert": "docker-compose exec app npm run insert",
-    "docker:update": "docker-compose exec app npm run update",
-    "docker:delete": "docker-compose exec app npm run delete",
-    "docker:select": "docker-compose exec app npm run select"
+    "docker:insert": "docker-compose exec app npm run insert --",
+    "docker:update": "docker-compose exec app npm run update --",
+    "docker:delete": "docker-compose exec app npm run delete --",
+    "docker:select": "docker-compose exec app npm run select --"
   },
   "repository": {
     "type": "git",
