@@ -1,5 +1,5 @@
-build/*
-node_modules/*
+build
+node_modules
 .git
 .idea
 README.md
@@ -13,5 +13,12 @@ CODE_OF_CONDUCT.md
 .env-dist
 tests
 coverage
-build
 .github
+*.log
+bin
+.env
+docker-compose.yaml
+ecosystem.config.js
+index.html
+jest.config.ts
+tslint.json

@@ -4,14 +4,15 @@ PLUGIN?=mysql-notification
 SERVER_PORT?=2048
 SERVER_ADDRESS?=127.0.0.1
 
-mysql-notification : mysql-notification.c
-	${CC} -c -D SERVER_PORT=${SERVER_PORT} -D SERVER_ADDRESS='"${SERVER_ADDRESS}"' -Wall -fpic ${CCFLAGS} -o $@.o -I${MYSQL_INCLUDE_DIR} $?
-	${CC} -D SERVER_PORT=${SERVER_PORT} -D SERVER_ADDRESS='"${SERVER_ADDRESS}"' -shared -o $@.so $@.o
-	chmod 0644 $@.so
+${PLUGIN}.o : mysql-notification.c
+	${CC} -c -D SERVER_PORT=${SERVER_PORT} -D SERVER_ADDRESS='"${SERVER_ADDRESS}"' -Wall -fpic ${CCFLAGS} -o $@ -I${MYSQL_INCLUDE_DIR} $?
 
-install : mysql-notification.so
-	cp $? ${MYSQL_PLUGIN_DIR}/${PLUGIN}.so
+${PLUGIN}.so : ${PLUGIN}.o
+	${CC} -shared -o $@ $?
+	chmod 0644 $@
+
+install : ${PLUGIN}.so
+	cp $? ${MYSQL_PLUGIN_DIR}/$?
 
 clean:
-	unlink *.o
-	unlink *.so
+	rm -rf *.o *.so

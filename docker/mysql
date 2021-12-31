@@ -12,4 +12,4 @@ ADD docker/sudo.txt /etc/sudoers
 RUN chmod 440 /etc/sudoers
 WORKDIR /tmp
 COPY mysql-plugin/src src
-RUN cd src && make clean && make && make install
+RUN cd src && make clean && make install

@@ -3,7 +3,7 @@ services:
   app:
     build:
       context: '.'
-      dockerfile: 'docker/Dockerfile'
+      dockerfile: 'docker/node'
       args:
         - MYSQL_DATABASE=$MYSQL_DATABASE
         - MYSQL_PORT=$MYSQL_PORT
@@ -40,7 +40,7 @@ services:
   mysql:
     build:
       context: .
-      dockerfile: 'docker/Dockerfile.mysql'
+      dockerfile: 'docker/mysql'
       args:
         - SERVER_ADDRESS=172.25.0.2
         - SERVER_PORT=$SERVER_PORT
