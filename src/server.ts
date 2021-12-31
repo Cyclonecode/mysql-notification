@@ -21,11 +21,13 @@ const createIndexFile = () => {
     '          padding: 0; \n' +
     '        }\n' +
     '        #wrapper {\n' +
-    '          width: 400px;\n' +
+    '          width: 320px;\n' +
     '          margin: 0 auto; \n' +
+    '          text-align: center;\n' +
+    '          padding: 20px 0;\n' +
     '        }\n' +
     '        img {\n' +
-    '          display: block;\n' +
+    '          // display: block;\n' +
     '        }\n' +
     '        </style>\n' +
     '        <script>\n' +
@@ -34,8 +36,8 @@ const createIndexFile = () => {
     url +
     '", "echo-protocol");\n' +
     '          ws.onmessage = (e) => {\n' +
-    '            const events = ["UPDATE", "INSERT", "DELETE"];\n' +
-    "            const source = 'https://via.placeholder.com/250x32.png/000/fff/?text=' + events[JSON.parse(e.data).type - 1];\n" +
+    '            const events = ["INSERT", "UPDATE", "DELETE"];\n' +
+    "            const source = 'https://via.placeholder.com/250x64.png/000/fff/?text=' + events[JSON.parse(e.data).type - 2];\n" +
     "            const toAppend = '<img src=\"' + source + '\" />';\n" +
     "            const wrapper = document.getElementById('wrapper');\n" +
     '            wrapper.innerHTML += toAppend + "<br />";\n' +
