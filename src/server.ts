@@ -15,18 +15,36 @@ const createIndexFile = () => {
     '        <title>Example of a user defined function (UDF) in MySQL</title>\n' +
     '        <meta charset="UTF-8">\n' +
     '        <meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
+    '        <style>\n' +
+    '        html, body {\n' +
+    '          margin: 0;\n' +
+    '          padding: 0; \n' +
+    '        }\n' +
+    '        #wrapper {\n' +
+    '          width: 400px;\n' +
+    '          margin: 0 auto; \n' +
+    '        }\n' +
+    '        img {\n' +
+    '          display: block;\n' +
+    '        }\n' +
+    '        </style>\n' +
     '        <script>\n' +
-    '        document.addEventListener("DOMContentLoaded", function(event) {\n' +
+    '        document.addEventListener("DOMContentLoaded", (e) => {\n' +
     '          const ws = new WebSocket("' +
     url +
     '", "echo-protocol");\n' +
-    '          ws.onmessage = function(event) {\n' +
-    '            document.body.innerHTML += event.data + "<br />";\n' +
+    '          ws.onmessage = (e) => {\n' +
+    '            const events = ["UPDATE", "INSERT", "DELETE"];\n' +
+    "            const source = 'https://via.placeholder.com/250x32.png/000/fff/?text=' + events[JSON.parse(e.data).type - 1];\n" +
+    "            const toAppend = '<img src=\"' + source + '\" />';\n" +
+    "            const wrapper = document.getElementById('wrapper');\n" +
+    '            wrapper.innerHTML += toAppend + "<br />";\n' +
     '          };\n' +
     '        })\n' +
     '        </script>\n' +
     '    </head>\n' +
     '    <body>\n' +
+    '    <div id="wrapper"></div>\n' +
     '    </body>\n' +
     '</html>';
   fs.writeFile('index.html', output, (err) => {
