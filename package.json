@@ -12,7 +12,7 @@
     "@types/websocket": "^1.0.4",
     "cross-env": "^7.0.3",
     "dotenv": "^10.0.0",
-    "minimist": "^1.2.5",
+    "minimist": "^1.2.6",
     "mysql": "^2.18.1",
     "pm2": "^5.1.2",
     "ts-node": "^10.4.0",
