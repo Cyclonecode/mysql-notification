@@ -44,6 +44,7 @@ services:
       args:
         - SERVER_ADDRESS=172.25.0.2
         - SERVER_PORT=$SERVER_PORT
+    platform: linux/amd64
     ports:
       - "$MYSQL_PORT:$MYSQL_PORT"
     restart: always

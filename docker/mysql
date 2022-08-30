@@ -1,4 +1,4 @@
-FROM mysql:5.7
+FROM mysql:5.7-debian
 
 ARG SERVER_ADDRESS
 ARG SERVER_PORT

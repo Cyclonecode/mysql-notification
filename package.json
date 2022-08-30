@@ -1,35 +1,35 @@
 {
   "name": "mysql-notification",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Example of a user defined function (UDF) in MySQL",
   "engines": {
     "node": ">= 14.18.0"
   },
   "dependencies": {
     "@types/minimist": "^1.2.2",
-    "@types/mysql": "^2.15.19",
-    "@types/node": "^16.11.7",
-    "@types/websocket": "^1.0.4",
+    "@types/mysql": "^2.15.21",
+    "@types/node": "^18.7.14",
+    "@types/websocket": "^1.0.5",
     "cross-env": "^7.0.3",
-    "dotenv": "^10.0.0",
+    "dotenv": "^16.0.1",
     "minimist": "^1.2.5",
     "mysql": "^2.18.1",
-    "pm2": "^5.1.2",
-    "ts-node": "^10.4.0",
-    "typescript": "^4.4.4",
+    "pm2": "^5.2.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.2",
     "websocket": "^1.0.34",
-    "winston": "^3.3.3"
+    "winston": "^3.8.1"
   },
   "devDependencies": {
     "@types/http-server": "^0.12.1",
-    "@types/jest": "^27.0.3",
-    "@typescript-eslint/eslint-plugin": "^5.3.1",
-    "@typescript-eslint/parser": "^5.3.1",
-    "eslint": "^8.2.0",
-    "jest": "^27.3.1",
-    "prettier": "^2.4.1",
-    "ts-jest": "^27.0.7",
-    "ts-node-dev": "^1.1.8"
+    "@types/jest": "^28.1.0",
+    "@typescript-eslint/eslint-plugin": "^5.36.1",
+    "@typescript-eslint/parser": "^5.36.1",
+    "eslint": "^8.23.0",
+    "jest": "^28.0.0",
+    "prettier": "^2.7.1",
+    "ts-jest": "^28.0.0",
+    "ts-node-dev": "^2.0.0"
   },
   "scripts": {
     "test": "jest",
